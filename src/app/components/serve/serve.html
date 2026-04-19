@@ -1,0 +1,119 @@
+<div class="serve-page">
+  <div class="serve-header">
+    <h1 class="serve-title">Servir é um privilégio</h1>
+    <p class="serve-intro">
+      Quando você diz sim para servir sua comunidade através de sua igreja local, você diz sim para ser um farol de esperança para um mundo que está sedento por isso. Não seja apenas voluntário. Sirva em uma equipe onde você possa usar seus talentos e habilidades únicas para ajudar a fazer a diferença. Na Shalom, há muitas oportunidades para alavancar suas habilidades e causar impacto.
+    </p>
+  </div>
+
+  <div class="departments-grid">
+    <div class="dept-card" *ngFor="let dept of departments">
+      <span class="dept-icon">{{ dept.icon }}</span>
+      <h3 class="dept-name">{{ dept.name }}</h3>
+      <p class="dept-desc">{{ dept.description }}</p>
+      <button
+        class="dept-btn"
+        [class.requested]="dept.requested"
+        [disabled]="dept.requested"
+        (click)="openModal(dept)">
+        {{ dept.requested ? 'Solicitação enviada ✓' : 'Quero servir' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="selectedDept" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal()">✕</button>
+
+    <!-- Success state -->
+    <div class="modal-success" *ngIf="formSubmitted">
+      <span class="success-icon">✅</span>
+      <h2>Solicitação enviada!</h2>
+      <p>Obrigado por querer servir no ministério de <strong>{{ selectedDept.name }}</strong>. Entraremos em contato em breve!</p>
+      <button class="modal-ok-btn" (click)="closeModal()">Fechar</button>
+    </div>
+
+    <!-- Form state -->
+    <ng-container *ngIf="!formSubmitted">
+      <div class="modal-hero">
+        <img [src]="selectedDept.image" [alt]="selectedDept.name" class="modal-image">
+        <div class="modal-hero-overlay">
+          <h2 class="modal-title">{{ selectedDept.icon }} {{ selectedDept.name }}</h2>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-desc">{{ selectedDept.longDescription }}</p>
+
+        <form class="serve-form" (ngSubmit)="submitForm()" #serveForm="ngForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Nome completo</label>
+              <input type="text" id="fullName" name="fullName" [(ngModel)]="form.fullName" required placeholder="Seu nome completo">
+            </div>
+
+            <div class="form-group">
+              <label for="birthDate">Data de nascimento</label>
+              <input type="date" id="birthDate" name="birthDate" [(ngModel)]="form.birthDate" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="whatsapp">WhatsApp</label>
+              <input type="tel" id="whatsapp" name="whatsapp" [(ngModel)]="form.whatsapp" required placeholder="(00) 00000-0000">
+            </div>
+
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" [(ngModel)]="form.email" required placeholder="seu@email.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="availability">Disponibilidade</label>
+              <select id="availability" name="availability" [(ngModel)]="form.availability" required>
+                <option value="" disabled>Selecione sua disponibilidade</option>
+                <option value="morning">Manhã</option>
+                <option value="afternoon">Tarde</option>
+                <option value="evening">Noite</option>
+                <option value="flexible">Flexível</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="weekendsPerMonth">Finais de semana por mês</label>
+              <select id="weekendsPerMonth" name="weekendsPerMonth" [(ngModel)]="form.weekendsPerMonth" required>
+                <option value="" disabled>Selecione</option>
+                <option value="1">1 final de semana</option>
+                <option value="2">2 finais de semana</option>
+                <option value="3">3 finais de semana</option>
+                <option value="4">Todos os finais de semana</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="aboutYou">Conte um pouco sobre você e sua caminhada com Deus</label>
+            <textarea id="aboutYou" name="aboutYou" [(ngModel)]="form.aboutYou" rows="4" required placeholder="Compartilhe um pouco da sua história..."></textarea>
+          </div>
+
+          <div class="form-group form-check">
+            <label class="checkbox-label">
+              <input type="checkbox" name="commitment" [(ngModel)]="form.commitment" required>
+              <span class="checkmark"></span>
+              <span>Declaro servir com compromisso e responsabilidade o reino de Deus</span>
+            </label>
+          </div>
+
+          <button type="submit" class="submit-btn" [disabled]="!serveForm.valid || !form.commitment">
+            Enviar solicitação
+          </button>
+        </form>
+      </div>
+    </ng-container>
+  </div>
+</div>

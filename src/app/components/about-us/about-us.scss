@@ -1,0 +1,144 @@
+:host {
+  display: block;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: url('/tela.png') center/cover no-repeat;
+  filter: brightness(0.4);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+.content-section {
+  background: #fff;
+  padding: 48px 0;
+}
+
+.content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.content-image {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  padding-bottom: 56.25%; /* 16:9 */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Nós amamos a cidade */
+.love-city {
+  position: relative;
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.love-city-overlay {
+  position: absolute;
+  inset: 0;
+  background: #F29104;
+  z-index: 0;
+}
+
+.love-city-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.love-city-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 28px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.love-city-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #fff;
+  font-weight: 400;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .content-section {
+    padding: 32px 0;
+  }
+
+  .content-wrapper {
+    gap: 28px;
+  }
+
+  .love-city {
+    padding: 48px 0;
+  }
+
+  .love-city-title {
+    font-size: 1.8rem;
+  }
+
+  .love-city-text {
+    font-size: 1rem;
+  }
+}

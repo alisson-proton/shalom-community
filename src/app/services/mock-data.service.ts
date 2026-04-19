@@ -1,90 +1,183 @@
 import { Injectable } from '@angular/core';
-import { Post, PostType, Visibility, Media } from '../models/post.model';
+import { BehaviorSubject } from 'rxjs';
+import { Post, PostType, Visibility, Media, Comment } from '../models/post.model';
 import { User, UserRole } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MockDataService {
+  private selectedFilter$ = new BehaviorSubject<string>('all');
+
+  get filterChanges() {
+    return this.selectedFilter$.asObservable();
+  }
+
+  setFilter(filter: string): void {
+    this.selectedFilter$.next(filter);
+  }
+
+  getCurrentFilter(): string {
+    return this.selectedFilter$.getValue();
+  }
+
   private posts: Post[] = [
     {
+      id: '9',
+      title: 'CULTO DE HOJE! 19/04/2026 ',
+      content: 'Não importa o que você fez. Não importa onde você você esteve. Jesus é por você e nós também!',
+      type: PostType.SERMON,
+      visibility: Visibility.PUBLIC,
+      media: [],
+      authorName: 'Worship Team',
+      createdAt: new Date('2026-04-19'),
+      tags: ['worship', 'youtube', 'live'],
+      likes: 73,
+      likedByUsers: [],
+      commentsList: [
+        { id: 'c1', authorName: 'João Membro', content: 'Que culto abençoado!', createdAt: new Date('2026-04-19') },
+        { id: 'c2', authorName: 'Maria Silva', content: 'Glória a Deus! 🙌', createdAt: new Date('2026-04-19') }
+      ],
+      externalUrl: 'https://www.youtube.com/watch?v=m3T5pzuU0iw'
+    },
+    {
+      id: '9',
+      title: 'Venceu a morte (Death mas arrested) | North Point Church | Shalom MSC',
+      content: 'Não importa o que você fez. Não importa onde você você esteve. Jesus é por você e nós também!',
+      type: PostType.EVENT,
+      visibility: Visibility.PUBLIC,
+      media: [],
+      authorName: 'Worship Team',
+      createdAt: new Date('2026-03-20'),
+      tags: ['worship', 'youtube', 'live'],
+      likes: 73,
+      likedByUsers: [],
+      commentsList: [
+        { id: 'c1', authorName: 'João Membro', content: 'Que culto abençoado!', createdAt: new Date('2026-03-20') },
+        { id: 'c2', authorName: 'Maria Silva', content: 'Glória a Deus! 🙌', createdAt: new Date('2026-03-20') }
+      ],
+      externalUrl: 'https://www.youtube.com/watch?v=Irwt0GsJILc'
+    },
+    {
+      id: '9',
+      title: 'O que é quebrantamento?',
+      content: 'Não importa o que você fez. Não importa onde você você esteve. Jesus é por você e nós também!',
+      type: PostType.SERMON,
+      visibility: Visibility.PUBLIC,
+      media: [],
+      authorName: 'Worship Team',
+      createdAt: new Date('2026-01-5'),
+      tags: ['worship', 'youtube', 'live'],
+      likes: 73,
+      likedByUsers: [],
+      commentsList: [
+        { id: 'c1', authorName: 'João Membro', content: 'Que culto abençoado!', createdAt: new Date('2026-01-5') },
+        { id: 'c2', authorName: 'Maria Silva', content: 'Glória a Deus! 🙌', createdAt: new Date('2026-01-5') }
+      ],
+      externalUrl: 'https://www.youtube.com/watch?v=La-sUfy9jE8'
+    },
+    {
+      id: '10',
+      title: 'Londrina precisa ser amada.\nVamos transformar Londrina através da vida de Cristo em nós! 🧡',
+      content: 'E como vamos fazer isso?\nNossos grupos espalhados por Londrina são ambientes preparados para acolher, amar e fazer com que as pessoas tenham um verdadeiro encontro com Jesus.\nPor isso, nós vamos fazer sempre uma vez mais\nNós vamos, amar, perdoar, discipular e servir uma vez mais\nNós vamos, orar, jejuar, evangelizar e adorar uma vez mais\nNós vamos, ser igreja, ser família, ser comunidade uma vez mais\nSomos uma igreja de pessoas imperfeitas que estão em constante transformação e você está convidado para fazer parte dessa missão e sonhar junto com a gente o que Deus plantou em nossos corações\nClique no link ou mande uma mensagem para fazer conhecer mais nossa comunidade e nossos grupos\nVocê não pode ficar de fora!',
+      type: PostType.GALLERY,
+      visibility: Visibility.PUBLIC,
+      media: [{
+        id: 'm10',
+        url: '/post6.jpg',
+        type: 'image',
+        description: 'Comunidade Shalom Londrina'
+      }],
+      authorName: 'Equipe de Mídia',
+      createdAt: new Date('2026-04-17'),
+      tags: ['instagram', 'comunidade', 'grupos'],
+      likes: 96,
+      likedByUsers: [],
+      commentsList: [
+        { id: 'c3', authorName: 'Ana Costa', content: 'Londrina precisa disso!', createdAt: new Date('2026-04-17') }
+      ],
+      externalUrl: 'https://www.instagram.com/comunidadeshalom_/reel/CvdaG7SJY9V/'
+    },
+    {
       id: '1',
-      title: 'Welcome to Shalom Community!',
-      content: 'We are excited to welcome you to our online community. Here you can stay connected with our church family, watch services, and participate in our various activities.',
+      title: 'Domingo de santa ceia!',
+      content: 'Venha celebrar a santa ceia conosco nesse domingo!',
       type: PostType.ANNOUNCEMENT,
       visibility: Visibility.PUBLIC,
       media: [{
         id: 'm1',
-        url: 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=800',
+        url: '/post7.jpg',
         type: 'image',
-        description: 'Church community gathering'
+        description: 'Reunião da comunidade'
       }],
-      authorName: 'Pastor John',
+      authorName: 'Pastor João',
       createdAt: new Date('2026-04-15'),
-      tags: ['welcome', 'community'],
+      tags: ['santa-ceira', 'comunidade'],
+      likes: 80,
+      likedByUsers: [],
+      commentsList: []
+    },
+    {
+      id: '1',
+      title: 'Festa no céu!',
+      content: 'Domingo de batismo, é festa no céu!',
+      type: PostType.ANNOUNCEMENT,
+      visibility: Visibility.MEMBERS_ONLY,
+      media: [{
+        id: 'm1',
+        url: '/post5.jpg',
+        type: 'image',
+        description: 'Reunião da comunidade'
+      }],
+      authorName: 'Pastor João',
+      createdAt: new Date('2026-04-15'),
+      tags: ['boas-vindas', 'comunidade'],
       likes: 45,
-      comments: 12
+      likedByUsers: [],
+      commentsList: []
     },
     {
       id: '2',
-      title: 'Sunday Service - The Power of Faith',
-      content: 'Join us for this powerful message about faith and trust in God. Available for all members to watch and reflect.',
-      type: PostType.SERMON,
-      visibility: Visibility.MEMBERS_ONLY,
+      title: 'Um ano repleto de alegria em Jesus!!',
+      content: '2025 foi glorioso, e 2026 será ainda mais incrível. Que você e sua família possam viver o melhor de Deus nesse ano que está por vir✨🙌🏼',
+      type: PostType.ANNOUNCEMENT,
+      visibility: Visibility.PUBLIC,
       media: [{
         id: 'm2',
-        url: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800',
-        type: 'video',
-        description: 'Sunday service recording'
+        url: '/post1.jpg',
+        type: 'image',
+        description: 'Gravação do culto de domingo'
       }],
-      authorName: 'Pastor John',
-      createdAt: new Date('2026-04-13'),
-      tags: ['sermon', 'faith', 'sunday'],
-      likes: 89,
-      comments: 23
+      authorName: 'Pastor João',
+      createdAt: new Date('2026-01-01'),
+      tags: ['anonovo', 'fé', 'Jesus'],
+      likes: 950,
+      likedByUsers: [],
+      commentsList: []
     },
     {
       id: '3',
-      title: 'Bible Study Course - Book of Genesis',
-      content: 'New 8-week course starting next month. Deep dive into the Book of Genesis with interactive sessions and discussions. Members only.',
+      title: 'Curso Descubra',
+      content: 'Novo curso de 8 semanas começando no próximo mês. Mergulho profundo no Livro de Gênesis com sessões interativas e discussões. Somente para membros.',
       type: PostType.COURSE,
       visibility: Visibility.MEMBERS_ONLY,
       media: [{
         id: 'm3',
         url: 'https://images.unsplash.com/photo-1519791883288-dc8bd696e667?w=800',
         type: 'image',
-        description: 'Bible study materials'
+        description: 'Materiais de estudo bíblico'
       }],
-      authorName: 'Teacher Sarah',
+      authorName: 'Professora Sara',
       createdAt: new Date('2026-04-12'),
-      tags: ['course', 'bible-study', 'genesis'],
+      tags: ['curso', 'estudo-bíblico', 'gênesis'],
       likes: 67,
-      comments: 15
-    },
-    {
-      id: '4',
-      title: 'Easter Celebration 2026',
-      content: 'Join us for our Easter celebration service! Special worship, message, and fellowship. Everyone is welcome!',
-      type: PostType.EVENT,
-      visibility: Visibility.PUBLIC,
-      media: [
-        {
-          id: 'm4',
-          url: 'https://images.unsplash.com/photo-1491677533189-49af0b46d5fb?w=800',
-          type: 'image',
-          description: 'Easter celebration'
-        }
-      ],
-      authorName: 'Events Team',
-      createdAt: new Date('2026-04-10'),
-      tags: ['event', 'easter', 'celebration'],
-      likes: 124,
-      comments: 34
+      likedByUsers: [],
+      commentsList: []
     },
     {
       id: '5',
-      title: 'Youth Ministry Photos',
-      content: 'Amazing moments from our youth ministry retreat last weekend. What a blessing!',
+      title: 'Fotos do Ministério de Jovens',
+      content: 'Momentos incríveis do nosso retiro do ministério de jovens no último fim de semana. Que bênção!',
       type: PostType.GALLERY,
       visibility: Visibility.MEMBERS_ONLY,
       media: [
@@ -92,80 +185,104 @@ export class MockDataService {
           id: 'm5a',
           url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800',
           type: 'image',
-          description: 'Youth group activity 1'
+          description: 'Atividade do grupo de jovens 1'
         },
         {
           id: 'm5b',
           url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800',
           type: 'image',
-          description: 'Youth group activity 2'
+          description: 'Atividade do grupo de jovens 2'
         },
         {
           id: 'm5c',
           url: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800',
           type: 'image',
-          description: 'Youth group activity 3'
+          description: 'Atividade do grupo de jovens 3'
         }
       ],
-      authorName: 'Youth Leader Mike',
+      authorName: 'Líder de Jovens Miguel',
       createdAt: new Date('2026-04-08'),
-      tags: ['gallery', 'youth', 'retreat'],
+      tags: ['galeria', 'jovens', 'retiro'],
       likes: 56,
-      comments: 19
+      likedByUsers: [],
+      commentsList: []
     },
     {
       id: '6',
-      title: 'Prayer Request - Community Support',
-      content: 'Let us come together in prayer for our community members facing challenges. Members can share specific prayer requests in the comments.',
+      title: 'Pedido de Oração - Apoio da Comunidade',
+      content: 'Vamos nos unir em oração pelos membros da nossa comunidade que enfrentam desafios. Membros podem compartilhar pedidos específicos de oração nos comentários.',
       type: PostType.PRAYER,
       visibility: Visibility.MEMBERS_ONLY,
       media: [{
         id: 'm6',
         url: 'https://images.unsplash.com/photo-1528459199957-0ff28496a7f6?w=800',
         type: 'image',
-        description: 'Prayer hands'
+        description: 'Mãos em oração'
       }],
-      authorName: 'Prayer Ministry',
+      authorName: 'Ministério de Oração',
       createdAt: new Date('2026-04-07'),
-      tags: ['prayer', 'support'],
+      tags: ['oração', 'apoio'],
       likes: 78,
-      comments: 42
+      likedByUsers: [],
+      commentsList: []
     },
     {
       id: '7',
-      title: 'Community Outreach - Food Drive',
-      content: 'Join us in making a difference! We are organizing a food drive for local families in need. Everyone can participate!',
+      title: 'Você é nosso convidado para o Culto de Páscoa, dia 05 de abril ✨',
+      content: 'A Páscoa não é só uma data… é vida, é alegria, é celebração!\nAquilo que parecia o fim se transformou em um novo começo e essa verdade continua viva hoje.\n\nQueremos viver isso juntos 💛\nConvide sua família, chama seus amigos e vem celebrar com a gente uma noite cheia de esperança e fé.',
       type: PostType.EVENT,
       visibility: Visibility.PUBLIC,
       media: [{
         id: 'm7',
-        url: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800',
+        url: '/post4.jpg',
         type: 'image',
-        description: 'Food donation boxes'
+        description: 'Caixas de doação de alimentos'
       }],
-      authorName: 'Outreach Team',
+      authorName: 'Equipe de Ação Social',
       createdAt: new Date('2026-04-05'),
-      tags: ['outreach', 'community', 'service'],
+      tags: ['páscoa', 'evento', 'celebração'],
       likes: 92,
-      comments: 28
+      likedByUsers: [],
+      commentsList: []
     },
     {
-      id: '8',
-      title: 'Worship Night - This Friday',
-      content: 'Special worship night this Friday at 7 PM. Come and experience the presence of God through powerful worship and praise.',
+      id: '9',
+      title: 'Atencão!',
+      content: 'A partir do dia 04/01, retornamos com nossos encontros às 10h30, e continuamos com os encontros às 19h! ✨\nEsperamos você para vivermos tudo o que Deus tem preparado! 🤍🙏',
       type: PostType.ANNOUNCEMENT,
       visibility: Visibility.PUBLIC,
       media: [{
         id: 'm8',
-        url: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800',
+        url: '/post2.jpg',
         type: 'image',
-        description: 'Worship band'
+        description: 'Banda de adoração'
       }],
-      authorName: 'Worship Team',
-      createdAt: new Date('2026-04-03'),
-      tags: ['worship', 'event', 'music'],
+      authorName: 'Equipe de Adoração',
+      createdAt: new Date('2025-12-31'),
+      tags: ['culto', 'horário', 'anúncio'],
       likes: 110,
-      comments: 25
+      likedByUsers: [],
+      commentsList: []
+    }
+    ,
+    {
+      id: '10',
+      title: 'Vigilia!',
+      content: '',
+      type: PostType.ANNOUNCEMENT,
+      visibility: Visibility.PUBLIC,
+      media: [{
+        id: 'm8',
+        url: '/post3.jpg',
+        type: 'image',
+        description: 'Banda de adoração'
+      }],
+      authorName: 'Equipe de Adoração',
+      createdAt: new Date('2026-01-27'),
+      tags: ['adoração', 'evento', 'vigilia'],
+      likes: 110,
+      likedByUsers: [],
+      commentsList: []
     }
   ];
 
@@ -212,14 +329,14 @@ export class MockDataService {
     const mockUsers: User[] = [
       {
         id: 'u1',
-        name: 'John Member',
+        name: 'João Membro',
         email: 'member@shalom.com',
         role: UserRole.MEMBER,
         isMember: true
       },
       {
         id: 'u2',
-        name: 'Admin User',
+        name: 'Administrador',
         email: 'admin@shalom.com',
         role: UserRole.ADMIN,
         isMember: true
@@ -248,5 +365,31 @@ export class MockDataService {
     };
     this.posts.unshift(newPost);
     return newPost;
+  }
+
+  // Toggle like on a post
+  toggleLike(postId: string, userId: string): void {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post) return;
+    const idx = post.likedByUsers.indexOf(userId);
+    if (idx === -1) {
+      post.likedByUsers.push(userId);
+      post.likes = (post.likes || 0) + 1;
+    } else {
+      post.likedByUsers.splice(idx, 1);
+      post.likes = (post.likes || 1) - 1;
+    }
+  }
+
+  // Add a comment to a post
+  addComment(postId: string, authorName: string, content: string): void {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post) return;
+    post.commentsList.push({
+      id: `c${Date.now()}`,
+      authorName,
+      content,
+      createdAt: new Date()
+    });
   }
 }

@@ -19,6 +19,13 @@ export interface Media {
   description?: string;
 }
 
+export interface Comment {
+  id: string;
+  authorName: string;
+  content: string;
+  createdAt: Date;
+}
+
 export interface Post {
   id: string;
   title: string;
@@ -30,5 +37,7 @@ export interface Post {
   createdAt: Date;
   tags: string[];
   likes?: number;
-  comments?: number;
+  likedByUsers: string[];
+  commentsList: Comment[];
+  externalUrl?: string;
 }

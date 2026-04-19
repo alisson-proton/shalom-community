@@ -1,8 +1,10 @@
 <div class="members-container">
   <div *ngIf="showLoginForm" class="login-container">
     <div class="login-card">
-      <h2>🔐 Members Login</h2>
-      <p>Please login to access members-only content</p>
+      <div class="login-logo">
+        <img src="logo.png" alt="Comunidade Shalom">
+      </div>
+      <p>Faça login para acessar o conteúdo exclusivo</p>
       
       <form (submit)="login(); $event.preventDefault()">
         <div class="form-group">
@@ -10,16 +12,16 @@
           <input 
             type="email" 
             [(ngModel)]="email" 
-            placeholder="member@shalom.com"
+            placeholder="membro@shalom.com"
             required>
         </div>
         
         <div class="form-group">
-          <label>Password</label>
+          <label>Senha</label>
           <input 
             type="password" 
             [(ngModel)]="password" 
-            placeholder="Enter your password"
+            placeholder="Digite sua senha"
             required>
         </div>
         
@@ -27,24 +29,19 @@
           {{ loginError }}
         </div>
         
-        <button type="submit" class="login-btn">Login</button>
+        <button type="submit" class="login-btn">Entrar</button>
       </form>
       
       <div class="demo-credentials">
-        <p><strong>Demo Credentials:</strong></p>
-        <p>Member: member@shalom.com (any password)</p>
-        <p>Admin: admin@shalom.com (any password)</p>
+        <p><strong>Credenciais de Demonstração:</strong></p>
+        <p>Membro: member@shalom.com (qualquer senha)</p>
+        <p>Admin: admin@shalom.com (qualquer senha)</p>
       </div>
     </div>
   </div>
 
   <div *ngIf="!showLoginForm && user" class="members-feed">
-    <div class="welcome-banner">
-      <h1>Welcome to the Members Area, {{ user.name }}! 🎉</h1>
-      <p>Access exclusive content, sermons, courses, and community updates</p>
-    </div>
-
-    <div class="posts-grid">
+    <div class="posts-feed">
       <app-post-card 
         *ngFor="let post of posts" 
         [post]="post">

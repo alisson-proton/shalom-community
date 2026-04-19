@@ -1,51 +1,13 @@
 <div class="feed-container">
-  <div class="feed-header">
-    <h1>🏛️ Community Feed</h1>
-    <p *ngIf="!user">Public posts - <a href="/members">Login</a> to see members-only content</p>
-    <p *ngIf="user">Welcome back, {{ user.name }}! 👋</p>
-  </div>
 
-  <div class="filter-bar">
-    <button 
-      [class.active]="selectedFilter === 'all'" 
-      (click)="filterByType('all')">
-      All Posts
-    </button>
-    <button 
-      [class.active]="selectedFilter === PostType.ANNOUNCEMENT" 
-      (click)="filterByType(PostType.ANNOUNCEMENT)">
-      📢 Announcements
-    </button>
-    <button 
-      [class.active]="selectedFilter === PostType.EVENT" 
-      (click)="filterByType(PostType.EVENT)">
-      📅 Events
-    </button>
-    <button 
-      [class.active]="selectedFilter === PostType.SERMON" 
-      (click)="filterByType(PostType.SERMON)">
-      🎤 Sermons
-    </button>
-    <button 
-      [class.active]="selectedFilter === PostType.COURSE" 
-      (click)="filterByType(PostType.COURSE)">
-      📚 Courses
-    </button>
-    <button 
-      [class.active]="selectedFilter === PostType.GALLERY" 
-      (click)="filterByType(PostType.GALLERY)">
-      📷 Galleries
-    </button>
-  </div>
-
-  <div class="posts-grid">
-    <app-post-card 
-      *ngFor="let post of filteredPosts" 
+  <div class="posts-feed">
+    <app-post-card
+      *ngFor="let post of sortedPosts"
       [post]="post">
     </app-post-card>
   </div>
 
-  <div *ngIf="filteredPosts.length === 0" class="no-posts">
-    <p>No posts found for this filter.</p>
+  <div *ngIf="posts.length === 0" class="no-posts">
+    <p>Nenhuma publicação encontrada.</p>
   </div>
 </div>

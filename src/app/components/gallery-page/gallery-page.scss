@@ -1,0 +1,37 @@
+.page-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #262626;
+  margin-bottom: 0.25rem;
+
+  .page-icon {
+    font-size: 1.3rem;
+  }
+
+  .page-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fafafa;
+    margin: 0;
+  }
+}
+
+.posts-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.no-posts {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}

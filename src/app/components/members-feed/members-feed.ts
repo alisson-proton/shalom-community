@@ -44,7 +44,7 @@ export class MembersFeed implements OnInit {
       this.loginError = '';
       this.loadPosts();
     } else {
-      this.loginError = 'Invalid credentials. Try: member@shalom.com / admin@shalom.com';
+      this.loginError = 'Credenciais inválidas. Tente: member@shalom.com / admin@shalom.com';
     }
   }
 

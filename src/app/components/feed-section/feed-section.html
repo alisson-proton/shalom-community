@@ -1,0 +1,14 @@
+<div class="feed-section" *ngIf="posts.length > 0">
+  <div class="section-header">
+    <span class="section-icon">{{ icon }}</span>
+    <h2 class="section-title">{{ title }}</h2>
+    <span class="section-count">{{ posts.length }}</span>
+  </div>
+
+  <div class="section-posts">
+    <app-post-card
+      *ngFor="let post of posts"
+      [post]="post">
+    </app-post-card>
+  </div>
+</div>

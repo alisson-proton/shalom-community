@@ -1,0 +1,32 @@
+<div class="page-container">
+  <h1 class="page-title">⛪ Nossas Igrejas</h1>
+  <p class="page-subtitle">Encontre a comunidade mais perto de você</p>
+
+  <div class="churches-list">
+    <div class="church-card" *ngFor="let church of churches" [class.main-church]="church.isMain" [class.full-width]="church.isMain">
+      <div class="church-badge" *ngIf="church.isMain">Sede Central</div>
+      <h3 class="church-name">{{ church.name }}</h3>
+      <div class="church-details">
+        <div class="church-detail">
+          <span class="detail-icon">📍</span>
+          <div class="detail-text">
+            <span>{{ church.address }}</span>
+            <span class="detail-secondary">{{ church.city }}</span>
+          </div>
+        </div>
+        <div class="church-detail">
+          <span class="detail-icon">📞</span>
+          <div class="detail-text">
+            <a [href]="'tel:' + church.phone">{{ church.phone }}</a>
+          </div>
+        </div>
+        <div class="church-detail">
+          <span class="detail-icon">🕐</span>
+          <div class="detail-text">
+            <span>{{ church.schedule }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

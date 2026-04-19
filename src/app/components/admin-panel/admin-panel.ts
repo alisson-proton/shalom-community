@@ -63,7 +63,8 @@ export class AdminPanel implements OnInit {
       authorName: this.mockDataService.getCurrentUser()?.name || 'Admin',
       tags: tagsArray,
       likes: 0,
-      comments: 0
+      likedByUsers: [],
+      commentsList: []
     });
 
     this.successMessage = `Post "${newPost.title}" created successfully!`;

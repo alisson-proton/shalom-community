@@ -2,10 +2,28 @@ import { Routes } from '@angular/router';
 import { Feed } from './components/feed/feed';
 import { MembersFeed } from './components/members-feed/members-feed';
 import { AdminPanel } from './components/admin-panel/admin-panel';
+import { Offerings } from './components/offerings/offerings';
+import { SocialLinks } from './components/social-links/social-links';
+import { Churches } from './components/churches/churches';
+import { Contact } from './components/contact/contact';
+import { CoursesPage } from './components/courses-page/courses-page';
+import { GalleryPage } from './components/gallery-page/gallery-page';
+import { PrayerPage } from './components/prayer-page/prayer-page';
+import { AboutUs } from './components/about-us/about-us';
+import { Serve } from './components/serve/serve';
 
 export const routes: Routes = [
-  { path: '', component: Feed },
+  { path: '', component: AboutUs },
+  { path: 'feed', component: Feed },
+  { path: 'serve', component: Serve },
   { path: 'members', component: MembersFeed },
   { path: 'admin', component: AdminPanel },
+  { path: 'offerings', component: Offerings },
+  { path: 'social', component: SocialLinks },
+  { path: 'churches', component: Churches },
+  { path: 'contact', component: Contact },
+  { path: 'courses', component: CoursesPage },
+  { path: 'gallery', component: GalleryPage },
+  { path: 'prayer', component: PrayerPage },
   { path: '**', redirectTo: '' }
 ];

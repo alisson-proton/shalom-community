@@ -1,0 +1,14 @@
+<div class="page-container">
+  <div class="page-header">
+    <span class="page-icon">📷</span>
+    <h1 class="page-title">Galeria</h1>
+  </div>
+
+  <div class="posts-feed">
+    <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
+  </div>
+
+  <div *ngIf="posts.length === 0" class="no-posts">
+    <p>Nenhuma foto ou vídeo disponível no momento.</p>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="page-container" *ngIf="user">
+  <h1 class="page-title">💛 Ofertas e Dízimos</h1>
+  <p class="page-subtitle">Escaneie o QR Code abaixo para realizar sua oferta ou dízimo</p>
+
+  <div class="qr-section">
+    <div class="qr-card">
+      <div class="qr-label">PIX - Comunidade Shalom</div>
+      <div class="qr-image">
+        <img src="qrcode-pix.png" alt="QR Code PIX" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="qr-placeholder">
+          <span class="qr-placeholder-icon">📱</span>
+          <span>QR Code PIX</span>
+          <span class="qr-placeholder-hint">Adicione o arquivo qrcode-pix.png na pasta public/</span>
+        </div>
+      </div>
+      <div class="pix-key">
+        <span class="pix-label">Chave PIX:</span>
+        <span class="pix-value">secretaria@imshalom.org.br</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="offerings-info">
+    <p>BANCO SICREDI (COD. 748)</p>
+    <p><strong>Igreja Missionária Comunidade Shalom</strong></p>
+    <p>Agência: 0718</p>
+    <p>Conta corrente: 12958-0</p>
+    <p>CNPJ: 80.924.327/0001-99</p>
+  </div>
+
+  <div class="offerings-info" style="margin-top: 10px;">
+    <p>"Cada um dê conforme determinou em seu coração, não com pesar ou por obrigação, pois Deus ama quem dá com alegria."</p>
+    <span class="verse-ref">2 Coríntios 9:7</span>
+  </div>
+</div>
+
+<div class="page-container" *ngIf="!user">
+  <div class="login-required">
+    <span class="lock-icon">🔒</span>
+    <h2>Área exclusiva para membros</h2>
+    <p>Faça login para acessar a área de ofertas e dízimos.</p>
+    <a routerLink="/members" class="login-link-btn">Entrar</a>
+  </div>
+</div>

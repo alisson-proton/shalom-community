@@ -1,16 +1,101 @@
 <header class="app-header">
   <div class="header-container">
+    <button class="hamburger" (click)="toggleSidebar()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
     <div class="logo">
-      <h1>🏛️ Shalom Community</h1>
+      <a routerLink="/">
+        <img src="logo.png" alt="Comunidade Shalom" class="logo-img">
+      </a>
     </div>
-    <nav class="nav-menu">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Public Feed</a>
-      <a routerLink="/members" routerLinkActive="active">Members Area</a>
-      <a routerLink="/admin" routerLinkActive="active" *ngIf="isAdmin">Admin Panel</a>
-    </nav>
     <div class="user-info">
-      <span *ngIf="user">👤 {{ user.name }}</span>
-      <button *ngIf="user" (click)="logout()" class="logout-btn">Logout</button>
+      <button *ngIf="user" (click)="logout()" class="logout-btn">Sair</button>
+      <button *ngIf="!user" (click)="goToLogin()" class="login-btn">Entrar</button>
     </div>
   </div>
 </header>
+
+<!-- Sidebar overlay -->
+<div class="sidebar-overlay" [class.open]="sidebarOpen" (click)="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" [class.open]="sidebarOpen">
+  <div class="sidebar-header">
+    <img src="logo.png" alt="Comunidade Shalom" class="sidebar-logo">
+    <button class="sidebar-close" (click)="closeSidebar()">✕</button>
+  </div>
+
+  <div class="sidebar-user" *ngIf="user">
+    <span class="sidebar-user-icon">👤</span>
+    <span class="sidebar-user-name">{{ user.name }}</span>
+  </div>
+
+  <div class="sidebar-scroll">
+    <div class="sidebar-links">
+      <a routerLink="/feed" (click)="closeSidebar()" routerLinkActive="active">
+        <span class="sidebar-icon">🏠</span>
+        <span>Feed</span>
+      </a>
+      <a routerLink="/admin" (click)="closeSidebar()" routerLinkActive="active" *ngIf="isAdmin">
+        <span class="sidebar-icon">⚙️</span>
+        <span>Painel Admin</span>
+      </a>
+    </div>
+
+    <!-- Content visible only to logged users -->
+    <ng-container *ngIf="user">
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-title">Conteúdo</div>
+
+      <div class="sidebar-links sidebar-extra-links">
+        <a routerLink="/courses" (click)="closeSidebar()" routerLinkActive="active">
+          <span class="sidebar-icon">📚</span>
+          <span>Cursos</span>
+        </a>
+        <a routerLink="/gallery" (click)="closeSidebar()" routerLinkActive="active">
+          <span class="sidebar-icon">📷</span>
+          <span>Galeria</span>
+        </a>
+        <a routerLink="/prayer" (click)="closeSidebar()" routerLinkActive="active">
+          <span class="sidebar-icon">🙏</span>
+          <span>Oração</span>
+        </a>
+        <a routerLink="/offerings" (click)="closeSidebar()" routerLinkActive="active">
+          <span class="sidebar-icon">💛</span>
+          <span>Ofertas e Dízimos</span>
+        </a>
+        <a routerLink="/serve" (click)="closeSidebar()" routerLinkActive="active">
+          <span class="sidebar-icon">🫂</span>
+          <span>Quero Servir</span>
+        </a>
+      </div>
+    </ng-container>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Visible to everyone -->
+    <div class="sidebar-links sidebar-extra-links">
+      <a routerLink="/social" (click)="closeSidebar()" routerLinkActive="active">
+        <span class="sidebar-icon">🌐</span>
+        <span>Redes Sociais</span>
+      </a>
+      <a routerLink="/churches" (click)="closeSidebar()" routerLinkActive="active">
+        <span class="sidebar-icon">⛪</span>
+        <span>Nossas Igrejas</span>
+      </a>
+      <a routerLink="/contact" (click)="closeSidebar()" routerLinkActive="active">
+        <span class="sidebar-icon">📩</span>
+        <span>Fale Conosco</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <button *ngIf="user" (click)="logout(); closeSidebar()" class="sidebar-logout">
+      <span class="sidebar-icon">🚪</span>
+      <span>Sair</span>
+    </button>
+  </div>
+</nav>

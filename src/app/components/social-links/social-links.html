@@ -1,0 +1,22 @@
+<div class="page-container">
+  <h1 class="page-title">🌐 Nossas Redes Sociais</h1>
+  <p class="page-subtitle">Siga a Comunidade Shalom em todas as plataformas</p>
+
+  <div class="social-grid">
+    <a 
+      *ngFor="let link of socialLinks" 
+      [href]="link.url" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      class="social-card">
+      <div class="social-icon-wrapper" [style.background]="link.color + '20'" [style.border-color]="link.color + '40'">
+        <img [src]="link.logo" [alt]="link.name" class="social-logo" [style.filter]="'brightness(0) saturate(100%) invert(1)'">
+      </div>
+      <div class="social-info">
+        <span class="social-name">{{ link.name }}</span>
+        <span class="social-desc">{{ link.description }}</span>
+      </div>
+      <span class="social-arrow">→</span>
+    </a>
+  </div>
+</div>

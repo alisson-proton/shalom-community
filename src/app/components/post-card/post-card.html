@@ -5,14 +5,42 @@
       <span class="type-label">{{ typeLabel }}</span>
     </div>
     <div class="post-meta">
-      <span class="author">By {{ post.authorName }}</span>
-      <span class="date">{{ post.createdAt | date:'MMM d, y' }}</span>
+      <span class="author">Por {{ post.authorName }}</span>
+      <span class="date">{{ post.createdAt | date:'dd/MM/yyyy' }}</span>
     </div>
   </div>
 
   <h2 class="post-title">{{ post.title }}</h2>
 
-  <div class="post-media" *ngIf="post.media && post.media.length > 0">
+  <!-- YouTube Embed -->
+  <div class="post-embed" *ngIf="isYouTube && youtubeEmbedUrl">
+    <iframe 
+      [src]="youtubeEmbedUrl"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- Instagram Link -->
+  <div class="post-external-link" *ngIf="isInstagram">
+    <a [href]="post.externalUrl" target="_blank" rel="noopener noreferrer" class="instagram-link">
+      <span class="link-icon">📸</span>
+      <span class="link-text">Ver no Instagram</span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- Other external link -->
+  <div class="post-external-link" *ngIf="post.externalUrl && !isYouTube && !isInstagram">
+    <a [href]="post.externalUrl" target="_blank" rel="noopener noreferrer" class="external-link">
+      <span class="link-icon">🔗</span>
+      <span class="link-text">Abrir Link</span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="post-media" *ngIf="post.media && post.media.length > 0 && !isYouTube">
     <img 
       [src]="post.media[currentMediaIndex].url" 
       [alt]="post.media[currentMediaIndex].description || post.title"
@@ -45,12 +73,57 @@
   </div>
 
   <div class="post-footer">
-    <div class="post-stats">
-      <span class="stat">❤️ {{ post.likes || 0 }}</span>
-      <span class="stat">💬 {{ post.comments || 0 }}</span>
+    <div class="post-actions">
+      <button class="action-btn like-btn" [class.liked]="isLiked" (click)="toggleLike()">
+        <span class="action-icon">{{ isLiked ? '❤️' : '🤍' }}</span>
+        <span class="action-count">{{ post.likes || 0 }}</span>
+      </button>
+      <button class="action-btn comment-btn" (click)="toggleComments()">
+        <span class="action-icon">💬</span>
+        <span class="action-count">{{ post.commentsList.length }}</span>
+      </button>
     </div>
     <span class="visibility-badge" [class.members-only]="post.visibility === 'members-only'">
-      {{ post.visibility === 'members-only' ? '🔒 Members Only' : '🌍 Public' }}
+      {{ post.visibility === 'members-only' ? '🔒 Somente Membros' : '🌍 Público' }}
     </span>
+  </div>
+
+  <!-- Comments Section -->
+  <div class="comments-section" *ngIf="showComments">
+    <div class="comments-list" *ngIf="post.commentsList.length > 0">
+      <div class="comment" *ngFor="let comment of post.commentsList">
+        <span class="comment-author">{{ comment.authorName }}</span>
+        <span class="comment-text">{{ comment.content }}</span>
+      </div>
+    </div>
+    <div class="comment-input-wrapper" *ngIf="user">
+      <input
+        type="text"
+        [(ngModel)]="newComment"
+        placeholder="Adicionar comentário..."
+        (keydown.enter)="submitComment()"
+        class="comment-input">
+      <button class="comment-submit" (click)="submitComment()" [disabled]="!newComment.trim()">Publicar</button>
+    </div>
+    <button class="login-prompt-btn" *ngIf="!user" (click)="showLoginModal = true">
+      Entre para comentar
+    </button>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="login-modal-overlay" *ngIf="showLoginModal" (click)="showLoginModal = false">
+    <div class="login-modal" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="showLoginModal = false">✕</button>
+      <img src="logo.png" alt="Comunidade Shalom" class="modal-logo">
+      <h3>Entrar na Comunidade</h3>
+      <p class="modal-subtitle">Faça login para curtir e comentar</p>
+      <div class="modal-form">
+        <input type="email" [(ngModel)]="loginEmail" placeholder="Email" class="modal-input">
+        <input type="password" [(ngModel)]="loginPassword" placeholder="Senha" class="modal-input">
+        <p class="modal-error" *ngIf="loginError">{{ loginError }}</p>
+        <button class="modal-login-btn" (click)="loginFromModal()">Entrar</button>
+        <p class="modal-hint">Demo: member&#64;shalom.com / qualquer senha</p>
+      </div>
+    </div>
   </div>
 </div>

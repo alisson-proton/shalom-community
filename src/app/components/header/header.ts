@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MockDataService } from '../../services/mock-data.service';
 
 @Component({
@@ -10,7 +10,12 @@ import { MockDataService } from '../../services/mock-data.service';
   styleUrl: './header.scss',
 })
 export class Header {
-  constructor(private mockDataService: MockDataService) {}
+  sidebarOpen = false;
+
+  constructor(
+    private mockDataService: MockDataService,
+    private router: Router
+  ) {}
 
   get user() {
     return this.mockDataService.getCurrentUser();
@@ -20,7 +25,30 @@ export class Header {
     return this.user?.role === 'admin';
   }
 
+  get currentFilter() {
+    return this.mockDataService.getCurrentFilter();
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen = false;
+  }
+
+  selectFilter(filter: string): void {
+    this.mockDataService.setFilter(filter);
+    this.router.navigate(['/']);
+    this.closeSidebar();
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['/members']);
+  }
+
   logout(): void {
     this.mockDataService.logout();
+    this.router.navigate(['/']);
   }
 }

@@ -1,0 +1,35 @@
+<div class="page-container">
+  <div class="page-header">
+    <span class="page-icon">🙏</span>
+    <h1 class="page-title">Oração</h1>
+    <button class="prayer-header-btn" (click)="showPrayerForm = !showPrayerForm" *ngIf="!prayerSubmitted">
+      Enviar Pedido
+    </button>
+  </div>
+
+  <!-- Prayer form -->
+  <div class="prayer-action" *ngIf="showPrayerForm && !prayerSubmitted">
+    <textarea
+      [(ngModel)]="prayerText"
+      placeholder="Escreva seu pedido de oração..."
+      rows="3"
+      class="prayer-textarea">
+    </textarea>
+    <div class="prayer-form-actions">
+      <button class="prayer-cancel" (click)="showPrayerForm = false">Cancelar</button>
+      <button class="prayer-submit" (click)="submitPrayer()" [disabled]="!prayerText.trim()">Enviar</button>
+    </div>
+  </div>
+
+  <div class="prayer-success" *ngIf="prayerSubmitted">
+    <span>✅ Pedido de oração enviado! A equipe pastoral estará orando por você.</span>
+  </div>
+
+  <div class="posts-feed">
+    <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
+  </div>
+
+  <div *ngIf="posts.length === 0" class="no-posts">
+    <p>Nenhum pedido de oração no momento.</p>
+  </div>
+</div>
