@@ -1,0 +1,56 @@
+<div class="post-card">
+  <div class="post-header">
+    <div class="post-type">
+      <span class="type-icon">{{ typeIcon }}</span>
+      <span class="type-label">{{ typeLabel }}</span>
+    </div>
+    <div class="post-meta">
+      <span class="author">By {{ post.authorName }}</span>
+      <span class="date">{{ post.createdAt | date:'MMM d, y' }}</span>
+    </div>
+  </div>
+
+  <h2 class="post-title">{{ post.title }}</h2>
+
+  <div class="post-media" *ngIf="post.media && post.media.length > 0">
+    <img 
+      [src]="post.media[currentMediaIndex].url" 
+      [alt]="post.media[currentMediaIndex].description || post.title"
+      *ngIf="post.media[currentMediaIndex].type === 'image'">
+    
+    <div class="video-placeholder" *ngIf="post.media[currentMediaIndex].type === 'video'">
+      <div class="play-icon">▶️</div>
+      <p>Video: {{ post.media[currentMediaIndex].description }}</p>
+    </div>
+
+    <div class="media-controls" *ngIf="post.media.length > 1">
+      <button (click)="prevMedia()" [disabled]="currentMediaIndex === 0">‹</button>
+      <div class="media-indicators">
+        <span 
+          *ngFor="let media of post.media; let i = index"
+          [class.active]="i === currentMediaIndex"
+          (click)="selectMedia(i)">
+        </span>
+      </div>
+      <button (click)="nextMedia()" [disabled]="currentMediaIndex === post.media.length - 1">›</button>
+    </div>
+  </div>
+
+  <div class="post-content">
+    <p>{{ post.content }}</p>
+  </div>
+
+  <div class="post-tags" *ngIf="post.tags && post.tags.length > 0">
+    <span class="tag" *ngFor="let tag of post.tags">#{{ tag }}</span>
+  </div>
+
+  <div class="post-footer">
+    <div class="post-stats">
+      <span class="stat">❤️ {{ post.likes || 0 }}</span>
+      <span class="stat">💬 {{ post.comments || 0 }}</span>
+    </div>
+    <span class="visibility-badge" [class.members-only]="post.visibility === 'members-only'">
+      {{ post.visibility === 'members-only' ? '🔒 Members Only' : '🌍 Public' }}
+    </span>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<header class="app-header">
+  <div class="header-container">
+    <div class="logo">
+      <h1>🏛️ Shalom Community</h1>
+    </div>
+    <nav class="nav-menu">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Public Feed</a>
+      <a routerLink="/members" routerLinkActive="active">Members Area</a>
+      <a routerLink="/admin" routerLinkActive="active" *ngIf="isAdmin">Admin Panel</a>
+    </nav>
+    <div class="user-info">
+      <span *ngIf="user">👤 {{ user.name }}</span>
+      <button *ngIf="user" (click)="logout()" class="logout-btn">Logout</button>
+    </div>
+  </div>
+</header>
