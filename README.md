@@ -80,6 +80,8 @@ cd shalom-community
 
 2. Build and run with Docker Compose:
 ```bash
+docker compose up -d
+# or if using older Docker Compose
 docker-compose up -d
 ```
 
@@ -90,6 +92,8 @@ http://localhost:8080
 
 4. To stop the application:
 ```bash
+docker compose down
+# or if using older Docker Compose
 docker-compose down
 ```
 
@@ -107,11 +111,15 @@ docker run -d -p 8080:80 --name shalom-app shalom-community
 
 **View logs:**
 ```bash
+docker compose logs -f
+# or if using older Docker Compose
 docker-compose logs -f
 ```
 
 **Restart the application:**
 ```bash
+docker compose restart
+# or if using older Docker Compose
 docker-compose restart
 ```
 
