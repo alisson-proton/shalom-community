@@ -62,11 +62,74 @@ The application uses mock data stored in the `MockDataService`. Sample posts inc
 
 ## Getting Started
 
-### Prerequisites
+You can run this application either with Docker (recommended for quick setup) or locally with Node.js.
+
+### Option 1: Docker (Recommended)
+
+#### Prerequisites
+- Docker
+- Docker Compose
+
+#### Running with Docker
+
+1. Clone the repository:
+```bash
+git clone https://github.com/alisson-proton/shalom-community.git
+cd shalom-community
+```
+
+2. Build and run with Docker Compose:
+```bash
+docker compose up -d
+# or if using older Docker Compose
+docker-compose up -d
+```
+
+3. Open your browser and navigate to:
+```
+http://localhost:8080
+```
+
+4. To stop the application:
+```bash
+docker compose down
+# or if using older Docker Compose
+docker-compose down
+```
+
+#### Docker Commands
+
+**Build the image manually:**
+```bash
+docker build -t shalom-community .
+```
+
+**Run the container manually:**
+```bash
+docker run -d -p 8080:80 --name shalom-app shalom-community
+```
+
+**View logs:**
+```bash
+docker compose logs -f
+# or if using older Docker Compose
+docker-compose logs -f
+```
+
+**Restart the application:**
+```bash
+docker compose restart
+# or if using older Docker Compose
+docker-compose restart
+```
+
+### Option 2: Local Development
+
+#### Prerequisites
 - Node.js (v24+)
 - npm (v11+)
 
-### Installation
+#### Installation
 
 1. Clone the repository:
 ```bash
@@ -91,7 +154,7 @@ ng serve
 http://localhost:4200
 ```
 
-### Build
+#### Build
 
 To build the application for production:
 ```bash
