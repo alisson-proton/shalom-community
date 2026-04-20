@@ -11,6 +11,8 @@ import { GalleryPage } from './components/gallery-page/gallery-page';
 import { PrayerPage } from './components/prayer-page/prayer-page';
 import { AboutUs } from './components/about-us/about-us';
 import { Serve } from './components/serve/serve';
+import { CalendarPage } from './components/calendar/calendar';
+import { MinistrySchedulePage } from './components/ministry-schedule/ministry-schedule';
 
 export const routes: Routes = [
   { path: '', component: AboutUs },
@@ -25,5 +27,7 @@ export const routes: Routes = [
   { path: 'courses', component: CoursesPage },
   { path: 'gallery', component: GalleryPage },
   { path: 'prayer', component: PrayerPage },
+  { path: 'calendar', component: CalendarPage },
+  { path: 'ministry-schedule', component: MinistrySchedulePage },
   { path: '**', redirectTo: '' }
 ];

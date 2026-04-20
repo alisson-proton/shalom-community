@@ -1,0 +1,162 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <h1>📅 Calendário</h1>
+    <p>Cultos e eventos da Comunidade Shalom</p>
+  </div>
+
+  <div class="success-message" *ngIf="successMessage">
+    ✅ {{ successMessage }}
+  </div>
+
+  <!-- Month navigation -->
+  <div class="month-nav">
+    <button class="nav-btn" (click)="prevMonth()">‹</button>
+    <h2 class="month-title">{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
+    <button class="nav-btn" (click)="nextMonth()">›</button>
+  </div>
+
+  <!-- Calendar grid -->
+  <div class="calendar-grid">
+    <div class="weekday-header" *ngFor="let wd of weekDays">{{ wd }}</div>
+
+    <div
+      *ngFor="let day of calendarDays"
+      class="calendar-day"
+      [class.empty]="day.day === 0"
+      [class.today]="day.isToday"
+      [class.selected]="isSelected(day)"
+      [class.has-events]="day.events.length > 0"
+      (click)="selectDay(day)">
+      <span class="day-number" *ngIf="day.day > 0">{{ day.day }}</span>
+      <div class="event-dots" *ngIf="day.events.length > 0">
+        <span
+          *ngFor="let ev of day.events.slice(0, 3)"
+          class="event-dot"
+          [class.dot-cult]="ev.type === 'cult'"
+          [class.dot-event]="ev.type === 'event'">
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot dot-cult"></span> Culto</span>
+    <span class="legend-item"><span class="legend-dot dot-event"></span> Evento</span>
+  </div>
+
+  <!-- Selected day events -->
+  <div class="day-events-section" *ngIf="selectedDate">
+    <div class="day-events-header">
+      <h3>{{ formatDate(selectedDate) }}</h3>
+      <button *ngIf="isAdmin" class="btn-add" (click)="openAddModal()">+ Adicionar</button>
+    </div>
+
+    <div class="no-events" *ngIf="selectedDayEvents.length === 0">
+      <p>Nenhum evento neste dia.</p>
+    </div>
+
+    <div class="event-card" *ngFor="let event of selectedDayEvents">
+      <div class="event-card-header">
+        <span class="event-type-badge" [ngClass]="getEventTypeClass(event.type)">
+          {{ getEventTypeLabel(event.type) }}
+        </span>
+        <span class="event-visibility">{{ getVisibilityLabel(event.visibility) }}</span>
+      </div>
+      <h4 class="event-title">{{ event.title }}</h4>
+      <p class="event-description" *ngIf="event.description">{{ event.description }}</p>
+      <div class="event-meta">
+        <span *ngIf="event.time">🕐 {{ event.time }}<span *ngIf="event.endTime"> – {{ event.endTime }}</span></span>
+        <span *ngIf="event.location">📍 {{ event.location }}</span>
+      </div>
+
+      <!-- Admin actions -->
+      <div class="event-card-actions" *ngIf="isAdmin">
+        <button class="btn-icon btn-edit" (click)="openEditModal(event)" title="Editar">✏️ Editar</button>
+        <button class="btn-icon btn-schedule" (click)="goToMinistrySchedule(event.id)" title="Escalar ministérios">📋 Escalar</button>
+        <button
+          *ngIf="deleteConfirmId !== event.id"
+          class="btn-icon btn-delete"
+          (click)="confirmDelete(event.id)"
+          title="Excluir">🗑️ Excluir</button>
+        <ng-container *ngIf="deleteConfirmId === event.id">
+          <span class="delete-confirm-text">Confirmar exclusão?</span>
+          <button class="btn-icon btn-delete-confirm" (click)="deleteEvent(event.id)">Sim</button>
+          <button class="btn-icon btn-cancel" (click)="cancelDelete()">Não</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming events list (no date selected) -->
+  <div class="upcoming-section" *ngIf="!selectedDate">
+    <h3>Próximos Eventos</h3>
+    <p class="hint">Selecione um dia no calendário para ver os eventos</p>
+  </div>
+</div>
+
+<!-- Event form modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ editingEvent ? '✏️ Editar Evento' : '➕ Novo Evento' }}</h2>
+      <button class="modal-close" (click)="closeModal()">✕</button>
+    </div>
+
+    <form (submit)="saveEvent(); $event.preventDefault()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo *</label>
+          <select [(ngModel)]="form.type" name="type" required>
+            <option value="cult">Culto</option>
+            <option value="event">Evento</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Visibilidade *</label>
+          <select [(ngModel)]="form.visibility" name="visibility" required>
+            <option value="public">🌍 Público</option>
+            <option value="members_only">🔒 Somente Membros</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Título *</label>
+        <input type="text" [(ngModel)]="form.title" name="title" placeholder="Título do evento" required />
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea [(ngModel)]="form.description" name="description" rows="3" placeholder="Descrição opcional"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data *</label>
+          <input type="date" [(ngModel)]="form.date" name="date" required />
+        </div>
+        <div class="form-group">
+          <label>Local</label>
+          <input type="text" [(ngModel)]="form.location" name="location" placeholder="Local do evento" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Horário início</label>
+          <input type="time" [(ngModel)]="form.time" name="time" />
+        </div>
+        <div class="form-group">
+          <label>Horário fim</label>
+          <input type="time" [(ngModel)]="form.endTime" name="endTime" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">{{ editingEvent ? 'Salvar' : 'Criar' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

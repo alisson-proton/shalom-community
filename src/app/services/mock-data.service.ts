@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Post, PostType, Visibility, Media, Comment } from '../models/post.model';
 import { User, UserRole } from '../models/user.model';
+import { CalendarEvent, CalendarEventType } from '../models/calendar-event.model';
+import { Ministry, MinistryMember, MinistrySchedule } from '../models/ministry.model';
 
 @Injectable({
   providedIn: 'root'
@@ -288,7 +290,168 @@ export class MockDataService {
 
   private currentUser: User | null = null;
 
-  constructor() { }
+  private calendarEvents: CalendarEvent[] = [
+    {
+      id: 'ce1',
+      title: 'Culto de Domingo',
+      description: 'Culto dominical com louvor e pregação da Palavra.',
+      date: new Date('2026-04-27'),
+      time: '10:30',
+      endTime: '12:00',
+      type: CalendarEventType.CULT,
+      location: 'Sede - Londrina',
+      visibility: 'public'
+    },
+    {
+      id: 'ce2',
+      title: 'Culto de Domingo (Noite)',
+      description: 'Culto noturno com louvor e pregação.',
+      date: new Date('2026-04-27'),
+      time: '19:00',
+      endTime: '20:30',
+      type: CalendarEventType.CULT,
+      location: 'Sede - Londrina',
+      visibility: 'public'
+    },
+    {
+      id: 'ce3',
+      title: 'Encontro de Jovens',
+      description: 'Encontro especial para jovens com dinâmicas e palavra.',
+      date: new Date('2026-05-02'),
+      time: '20:00',
+      endTime: '22:00',
+      type: CalendarEventType.EVENT,
+      location: 'Sede - Londrina',
+      visibility: 'public'
+    },
+    {
+      id: 'ce4',
+      title: 'Culto de Domingo',
+      description: 'Culto dominical com louvor e pregação da Palavra.',
+      date: new Date('2026-05-04'),
+      time: '10:30',
+      endTime: '12:00',
+      type: CalendarEventType.CULT,
+      location: 'Sede - Londrina',
+      visibility: 'public'
+    },
+    {
+      id: 'ce5',
+      title: 'Reunião de Líderes',
+      description: 'Reunião mensal dos líderes de ministérios.',
+      date: new Date('2026-05-07'),
+      time: '19:30',
+      endTime: '21:00',
+      type: CalendarEventType.EVENT,
+      location: 'Sede - Londrina',
+      visibility: 'members_only'
+    },
+    {
+      id: 'ce6',
+      title: 'Culto de Domingo',
+      description: 'Culto dominical com louvor e pregação da Palavra.',
+      date: new Date('2026-05-11'),
+      time: '10:30',
+      endTime: '12:00',
+      type: CalendarEventType.CULT,
+      location: 'Sede - Londrina',
+      visibility: 'public'
+    },
+    {
+      id: 'ce7',
+      title: 'Vigília de Oração',
+      description: 'Uma noite dedicada à oração e intercessão.',
+      date: new Date('2026-05-15'),
+      time: '22:00',
+      endTime: '00:00',
+      type: CalendarEventType.EVENT,
+      location: 'Sede - Londrina',
+      visibility: 'public'
+    }
+  ];
+
+  private ministries: Ministry[] = [
+    {
+      id: 'worship',
+      name: 'Louvor',
+      icon: '🎵',
+      members: [
+        { id: 'mm1', name: 'Carlos Henrique', phone: '(43) 99999-0001' },
+        { id: 'mm2', name: 'Fernanda Lima', phone: '(43) 99999-0002' },
+        { id: 'mm3', name: 'Rafael Souza', phone: '(43) 99999-0003' },
+        { id: 'mm4', name: 'Juliana Santos', phone: '(43) 99999-0004' }
+      ]
+    },
+    {
+      id: 'reception',
+      name: 'Recepção',
+      icon: '🤝',
+      members: [
+        { id: 'mm5', name: 'Patricia Oliveira', phone: '(43) 99999-0005' },
+        { id: 'mm6', name: 'Lucas Ferreira', phone: '(43) 99999-0006' },
+        { id: 'mm7', name: 'Mariana Costa', phone: '(43) 99999-0007' }
+      ]
+    },
+    {
+      id: 'media',
+      name: 'Mídia',
+      icon: '🎬',
+      members: [
+        { id: 'mm8', name: 'Anderson Reis', phone: '(43) 99999-0008' },
+        { id: 'mm9', name: 'Beatriz Alves', phone: '(43) 99999-0009' }
+      ]
+    },
+    {
+      id: 'coffee',
+      name: 'Café',
+      icon: '☕',
+      members: [
+        { id: 'mm10', name: 'Sandra Martins', phone: '(43) 99999-0010' },
+        { id: 'mm11', name: 'Roberto Nunes', phone: '(43) 99999-0011' },
+        { id: 'mm12', name: 'Cristina Vieira', phone: '(43) 99999-0012' }
+      ]
+    },
+    {
+      id: 'kids',
+      name: 'Kids',
+      icon: '🧒',
+      members: [
+        { id: 'mm13', name: 'Tatiane Borges', phone: '(43) 99999-0013' },
+        { id: 'mm14', name: 'Eduardo Campos', phone: '(43) 99999-0014' }
+      ]
+    },
+    {
+      id: 'security',
+      name: 'Segurança',
+      icon: '🛡️',
+      members: [
+        { id: 'mm15', name: 'Diego Pereira', phone: '(43) 99999-0015' },
+        { id: 'mm16', name: 'Marcos Rocha', phone: '(43) 99999-0016' }
+      ]
+    },
+    {
+      id: 'staff',
+      name: 'Staff',
+      icon: '⚙️',
+      members: [
+        { id: 'mm17', name: 'Rodrigo Azevedo', phone: '(43) 99999-0017' },
+        { id: 'mm18', name: 'Daniela Freitas', phone: '(43) 99999-0018' },
+        { id: 'mm19', name: 'Felipe Gomes', phone: '(43) 99999-0019' }
+      ]
+    },
+    {
+      id: 'prayer-team',
+      name: 'Intercessão',
+      icon: '🙏',
+      members: [
+        { id: 'mm20', name: 'Ana Paula Melo', phone: '(43) 99999-0020' },
+        { id: 'mm21', name: 'Vanessa Cardoso', phone: '(43) 99999-0021' }
+      ]
+    }
+  ];
+
+  private schedules: MinistrySchedule[] = [];
+
 
   // Get all posts or filter by visibility
   getPosts(membersOnly: boolean = false): Post[] {
@@ -391,5 +554,66 @@ export class MockDataService {
       content,
       createdAt: new Date()
     });
+  }
+
+  // ── Calendar Events ──────────────────────────────────────────────────
+
+  getCalendarEvents(): CalendarEvent[] {
+    if (!this.currentUser) {
+      return this.calendarEvents.filter(e => e.visibility === 'public');
+    }
+    return [...this.calendarEvents];
+  }
+
+  getCalendarEvent(id: string): CalendarEvent | undefined {
+    return this.calendarEvents.find(e => e.id === id);
+  }
+
+  addCalendarEvent(event: Omit<CalendarEvent, 'id'>): CalendarEvent {
+    const newEvent: CalendarEvent = {
+      ...event,
+      id: 'ce' + Date.now()
+    };
+    this.calendarEvents.push(newEvent);
+    return newEvent;
+  }
+
+  updateCalendarEvent(id: string, changes: Partial<Omit<CalendarEvent, 'id'>>): CalendarEvent | null {
+    const idx = this.calendarEvents.findIndex(e => e.id === id);
+    if (idx === -1) return null;
+    this.calendarEvents[idx] = { ...this.calendarEvents[idx], ...changes };
+    return this.calendarEvents[idx];
+  }
+
+  deleteCalendarEvent(id: string): void {
+    this.calendarEvents = this.calendarEvents.filter(e => e.id !== id);
+    this.schedules = this.schedules.filter(s => s.eventId !== id);
+  }
+
+  // ── Ministries ───────────────────────────────────────────────────────
+
+  getMinistries(): Ministry[] {
+    return [...this.ministries];
+  }
+
+  // ── Ministry Schedules ───────────────────────────────────────────────
+
+  getScheduleForEvent(eventId: string): MinistrySchedule | undefined {
+    return this.schedules.find(s => s.eventId === eventId);
+  }
+
+  saveSchedule(eventId: string, assignments: { ministryId: string; memberIds: string[] }[]): MinistrySchedule {
+    const existing = this.schedules.find(s => s.eventId === eventId);
+    if (existing) {
+      existing.assignments = assignments;
+      return existing;
+    }
+    const newSchedule: MinistrySchedule = {
+      id: 'ms' + Date.now(),
+      eventId,
+      assignments
+    };
+    this.schedules.push(newSchedule);
+    return newSchedule;
   }
 }

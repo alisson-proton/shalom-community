@@ -38,9 +38,17 @@
         <span class="sidebar-icon">🏠</span>
         <span>Feed</span>
       </a>
+      <a routerLink="/calendar" (click)="closeSidebar()" routerLinkActive="active">
+        <span class="sidebar-icon">📅</span>
+        <span>Calendário</span>
+      </a>
       <a routerLink="/admin" (click)="closeSidebar()" routerLinkActive="active" *ngIf="isAdmin">
         <span class="sidebar-icon">⚙️</span>
         <span>Painel Admin</span>
+      </a>
+      <a routerLink="/ministry-schedule" (click)="closeSidebar()" routerLinkActive="active" *ngIf="isAdmin">
+        <span class="sidebar-icon">📋</span>
+        <span>Escala de Ministérios</span>
       </a>
     </div>
 
