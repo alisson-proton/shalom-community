@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-social-links',
   imports: [CommonModule],
   templateUrl: './social-links.html',
-  styleUrl: './social-links.scss',
+  styleUrl: './social-links.css',
 })
 export class SocialLinks {
   socialLinks = [

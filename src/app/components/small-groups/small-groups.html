@@ -1,0 +1,236 @@
+<div class="sg-container">
+
+  <!-- Page Header -->
+  <div class="sg-page-header">
+    <div class="sg-page-header-left">
+      <span class="sg-page-icon">🏘️</span>
+      <div>
+        <h1 class="sg-page-title">Grupos Semanais</h1>
+        <p class="sg-page-subtitle">Gerencie os grupos que acontecem nas casas durante a semana</p>
+      </div>
+    </div>
+    <button class="sg-btn-primary" (click)="openAddGroup()">
+      + Novo Grupo
+    </button>
+  </div>
+
+  <!-- Delete Confirmation Banner -->
+  <div class="sg-confirm-delete" *ngIf="confirmDeleteId">
+    <span>⚠️ Tem certeza que deseja excluir este grupo?</span>
+    <div class="sg-confirm-actions">
+      <button class="sg-btn-ghost" (click)="cancelDelete()">Cancelar</button>
+      <button class="sg-btn-danger" (click)="confirmDelete()">Excluir</button>
+    </div>
+  </div>
+
+  <!-- Groups Grid -->
+  <div class="sg-grid" *ngIf="groups.length > 0">
+    <div
+      class="sg-card"
+      *ngFor="let group of groups"
+      (click)="openDetail(group)"
+      [class.sg-card--deleting]="confirmDeleteId === group.id">
+
+      <div class="sg-card-day">{{ group.dayOfWeek }}</div>
+      <h3 class="sg-card-title">{{ group.title }}</h3>
+
+      <div class="sg-card-info">
+        <div class="sg-card-row">
+          <span class="sg-card-icon-sm">👤</span>
+          <span class="sg-card-value">{{ group.leaders.join(', ') }}</span>
+        </div>
+        <div class="sg-card-row">
+          <span class="sg-card-icon-sm">📍</span>
+          <span class="sg-card-value">{{ group.neighborhood }}</span>
+        </div>
+        <div class="sg-card-row">
+          <span class="sg-card-icon-sm">🕐</span>
+          <span class="sg-card-value">{{ group.time }}</span>
+        </div>
+        <div class="sg-card-row">
+          <span class="sg-card-icon-sm">👥</span>
+          <span class="sg-card-value">{{ group.members.length }} membro{{ group.members.length !== 1 ? 's' : '' }}</span>
+        </div>
+      </div>
+
+      <div class="sg-card-actions" (click)="$event.stopPropagation()">
+        <button class="sg-card-action-btn" (click)="openEditGroup(group, $event)" title="Editar">✏️</button>
+        <button class="sg-card-action-btn sg-card-action-btn--danger" (click)="requestDelete(group.id, $event)" title="Excluir">🗑️</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-empty" *ngIf="groups.length === 0">
+    <span class="sg-empty-icon">🏘️</span>
+    <p>Nenhum grupo cadastrado ainda.</p>
+    <button class="sg-btn-primary" (click)="openAddGroup()">Criar primeiro grupo</button>
+  </div>
+
+</div>
+
+
+<!-- ── Detail Modal ─────────────────────────────────────────────────── -->
+<div class="sg-overlay" *ngIf="selectedGroup" (click)="closeDetail()">
+  <div class="sg-modal" (click)="$event.stopPropagation()">
+
+    <div class="sg-modal-header">
+      <div class="sg-modal-header-left">
+        <span class="sg-modal-icon">🏘️</span>
+        <div>
+          <h2 class="sg-modal-title">{{ selectedGroup.title }}</h2>
+          <span class="sg-modal-day-badge">{{ selectedGroup.dayOfWeek }} às {{ selectedGroup.time }}</span>
+        </div>
+      </div>
+      <button class="sg-modal-close" (click)="closeDetail()">✕</button>
+    </div>
+
+    <div class="sg-modal-body">
+
+      <!-- Description -->
+      <div class="sg-modal-section" *ngIf="selectedGroup.description">
+        <h4 class="sg-section-label">Descrição</h4>
+        <p class="sg-modal-description">{{ selectedGroup.description }}</p>
+      </div>
+
+      <!-- Info Row -->
+      <div class="sg-modal-info-row">
+        <div class="sg-modal-info-item">
+          <span class="sg-modal-info-icon">👤</span>
+          <div>
+            <span class="sg-modal-info-label">Líderes</span>
+            <span class="sg-modal-info-value">{{ selectedGroup.leaders.join(', ') }}</span>
+          </div>
+        </div>
+        <div class="sg-modal-info-item">
+          <span class="sg-modal-info-icon">📅</span>
+          <div>
+            <span class="sg-modal-info-label">Dia & Horário</span>
+            <span class="sg-modal-info-value">{{ selectedGroup.dayOfWeek }}, {{ selectedGroup.time }}</span>
+          </div>
+        </div>
+        <div class="sg-modal-info-item">
+          <span class="sg-modal-info-icon">📍</span>
+          <div>
+            <span class="sg-modal-info-label">Endereço</span>
+            <span class="sg-modal-info-value">{{ selectedGroup.address }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Members -->
+      <div class="sg-modal-section">
+        <div class="sg-section-header">
+          <h4 class="sg-section-label">Membros do Grupo ({{ selectedGroup.members.length }})</h4>
+          <button class="sg-btn-ghost-sm" (click)="showAddMemberForm = !showAddMemberForm">
+            {{ showAddMemberForm ? 'Cancelar' : '+ Adicionar membro' }}
+          </button>
+        </div>
+
+        <!-- Add member inline form -->
+        <div class="sg-add-member-form" *ngIf="showAddMemberForm">
+          <input
+            type="text"
+            [(ngModel)]="newMemberName"
+            placeholder="Nome do membro *"
+            class="sg-input sg-input--inline">
+          <input
+            type="text"
+            [(ngModel)]="newMemberPhone"
+            placeholder="Telefone (opcional)"
+            class="sg-input sg-input--inline">
+          <button class="sg-btn-primary sg-btn-sm" (click)="addMember()" [disabled]="!newMemberName.trim()">
+            Adicionar
+          </button>
+        </div>
+
+        <div class="sg-members-list" *ngIf="selectedGroup.members.length > 0">
+          <div class="sg-member-item" *ngFor="let member of selectedGroup.members">
+            <div class="sg-member-left">
+              <span class="sg-member-avatar">👤</span>
+              <div>
+                <span class="sg-member-name">{{ member.name }}</span>
+                <span class="sg-member-phone" *ngIf="member.phone">{{ member.phone }}</span>
+              </div>
+            </div>
+            <button class="sg-member-remove" (click)="removeMember(member.id)" title="Remover">✕</button>
+          </div>
+        </div>
+
+        <div class="sg-members-empty" *ngIf="selectedGroup.members.length === 0">
+          <p>Nenhum membro adicionado ainda.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-modal-footer">
+      <button class="sg-btn-ghost" (click)="closeDetail()">Fechar</button>
+      <button class="sg-btn-primary" (click)="openEditGroup(selectedGroup, $event); closeDetail()">Editar Grupo</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Add / Edit Group Modal ──────────────────────────────────────── -->
+<div class="sg-overlay" *ngIf="showGroupForm" (click)="closeGroupForm()">
+  <div class="sg-modal sg-modal--form" (click)="$event.stopPropagation()">
+
+    <div class="sg-modal-header">
+      <div class="sg-modal-header-left">
+        <span class="sg-modal-icon">{{ editingGroup ? '✏️' : '➕' }}</span>
+        <h2 class="sg-modal-title">{{ editingGroup ? 'Editar Grupo' : 'Novo Grupo' }}</h2>
+      </div>
+      <button class="sg-modal-close" (click)="closeGroupForm()">✕</button>
+    </div>
+
+    <div class="sg-modal-body">
+      <div class="sg-form-grid">
+
+        <div class="sg-form-group sg-form-group--full">
+          <label class="sg-form-label">Título *</label>
+          <input type="text" [(ngModel)]="formTitle" placeholder="Ex.: Grupo da Família Costa" class="sg-input">
+        </div>
+
+        <div class="sg-form-group sg-form-group--full">
+          <label class="sg-form-label">Descrição</label>
+          <textarea [(ngModel)]="formDescription" placeholder="Fale um pouco sobre o grupo..." rows="3" class="sg-textarea"></textarea>
+        </div>
+
+        <div class="sg-form-group sg-form-group--full">
+          <label class="sg-form-label">Líderes * <small>(separados por vírgula)</small></label>
+          <input type="text" [(ngModel)]="formLeaders" placeholder="Ex.: Pedro Costa, Ana Costa" class="sg-input">
+        </div>
+
+        <div class="sg-form-group">
+          <label class="sg-form-label">Dia da semana *</label>
+          <select [(ngModel)]="formDayOfWeek" class="sg-select">
+            <option value="">Selecionar...</option>
+            <option *ngFor="let day of daysOfWeek" [value]="day">{{ day }}</option>
+          </select>
+        </div>
+
+        <div class="sg-form-group">
+          <label class="sg-form-label">Horário</label>
+          <input type="time" [(ngModel)]="formTime" class="sg-input">
+        </div>
+
+        <div class="sg-form-group sg-form-group--full">
+          <label class="sg-form-label">Endereço completo *</label>
+          <input type="text" [(ngModel)]="formAddress" placeholder="Ex.: Rua das Flores, 142 – Jd. Shangrila" class="sg-input">
+        </div>
+
+        <div class="sg-form-group">
+          <label class="sg-form-label">Bairro</label>
+          <input type="text" [(ngModel)]="formNeighborhood" placeholder="Ex.: Jardim Shangrila" class="sg-input">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="sg-modal-footer">
+      <button class="sg-btn-ghost" (click)="closeGroupForm()">Cancelar</button>
+      <button class="sg-btn-primary" (click)="saveGroup()" [disabled]="!formValid">
+        {{ editingGroup ? 'Salvar Alterações' : 'Criar Grupo' }}
+      </button>
+    </div>
+  </div>
+</div>

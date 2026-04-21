@@ -1,0 +1,99 @@
+<div class="pfm-overlay" (click)="close.emit()">
+  <div class="pfm-modal" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="pfm-header">
+      <div class="pfm-header-left">
+        <span class="pfm-header-icon">✍️</span>
+        <h2 class="pfm-title">{{ modalTitle }}</h2>
+      </div>
+      <button class="pfm-close" (click)="close.emit()" aria-label="Fechar">✕</button>
+    </div>
+
+    <!-- Success State -->
+    <div class="pfm-success" *ngIf="successMessage">
+      <span class="pfm-success-icon">✅</span>
+      <span>{{ successMessage }}</span>
+    </div>
+
+    <!-- Form -->
+    <div class="pfm-body" *ngIf="!successMessage">
+      <div class="pfm-row">
+        <div class="pfm-group" *ngIf="!lockType">
+          <label class="pfm-label">Tipo</label>
+          <select [(ngModel)]="selectedType" class="pfm-select">
+            <option *ngFor="let type of postTypes" [value]="type">
+              {{ typeLabels[type] }}
+            </option>
+          </select>
+        </div>
+
+        <div class="pfm-group">
+          <label class="pfm-label">Visibilidade</label>
+          <select [(ngModel)]="selectedVisibility" class="pfm-select">
+            <option *ngFor="let vis of visibilityOptions" [value]="vis">
+              {{ visibilityLabels[vis] }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pfm-group pfm-full">
+        <label class="pfm-label">Título *</label>
+        <input
+          type="text"
+          [(ngModel)]="title"
+          placeholder="Digite o título da publicação"
+          class="pfm-input">
+      </div>
+
+      <div class="pfm-group pfm-full">
+        <label class="pfm-label">Conteúdo *</label>
+        <textarea
+          [(ngModel)]="content"
+          placeholder="Digite o conteúdo da publicação"
+          rows="5"
+          class="pfm-textarea">
+        </textarea>
+      </div>
+
+      <div class="pfm-row">
+        <div class="pfm-group pfm-full">
+          <label class="pfm-label">URL da Mídia</label>
+          <input
+            type="url"
+            [(ngModel)]="mediaUrl"
+            placeholder="https://exemplo.com/imagem.jpg"
+            class="pfm-input">
+        </div>
+      </div>
+
+      <div class="pfm-group pfm-full">
+        <label class="pfm-label">Descrição da Mídia</label>
+        <input
+          type="text"
+          [(ngModel)]="mediaDescription"
+          placeholder="Legenda opcional da mídia"
+          class="pfm-input">
+      </div>
+
+      <div class="pfm-group pfm-full">
+        <label class="pfm-label">Tags <small>(separadas por vírgula)</small></label>
+        <input
+          type="text"
+          [(ngModel)]="tags"
+          placeholder="adoração, comunidade, jovens"
+          class="pfm-input">
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="pfm-footer" *ngIf="!successMessage">
+      <button class="pfm-btn-ghost" (click)="close.emit()">Cancelar</button>
+      <button class="pfm-btn-primary" (click)="createPost()" [disabled]="!formValid">
+        Publicar
+      </button>
+    </div>
+
+  </div>
+</div>

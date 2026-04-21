@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   selector: 'app-about-us',
   standalone: true,
   templateUrl: './about-us.html',
-  styleUrls: ['./about-us.scss']
+  styleUrls: ['./about-us.css']
 })
 export class AboutUs {
   videoUrl: SafeResourceUrl;

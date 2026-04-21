@@ -16,7 +16,7 @@ interface MinistryAssignment {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './ministry-schedule.html',
-  styleUrl: './ministry-schedule.scss'
+  styleUrl: './ministry-schedule.css'
 })
 export class MinistrySchedulePage implements OnInit {
   events: CalendarEvent[] = [];

@@ -17,7 +17,7 @@ interface CalendarDay {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './calendar.html',
-  styleUrl: './calendar.scss'
+  styleUrl: './calendar.css'
 })
 export class CalendarPage implements OnInit {
   currentMonth!: number;

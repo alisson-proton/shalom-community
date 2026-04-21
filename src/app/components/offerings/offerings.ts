@@ -7,7 +7,7 @@ import { MockDataService } from '../../services/mock-data.service';
   selector: 'app-offerings',
   imports: [CommonModule, RouterModule],
   templateUrl: './offerings.html',
-  styleUrl: './offerings.scss',
+  styleUrl: './offerings.css',
 })
 export class Offerings {
   constructor(private mockDataService: MockDataService) {}

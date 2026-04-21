@@ -29,7 +29,7 @@ interface ServeForm {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './serve.html',
-  styleUrls: ['./serve.scss']
+  styleUrls: ['./serve.css']
 })
 export class Serve {
   selectedDept: Department | null = null;

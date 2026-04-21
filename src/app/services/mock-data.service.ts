@@ -4,6 +4,7 @@ import { Post, PostType, Visibility, Media, Comment } from '../models/post.model
 import { User, UserRole } from '../models/user.model';
 import { CalendarEvent, CalendarEventType } from '../models/calendar-event.model';
 import { Ministry, MinistryMember, MinistrySchedule } from '../models/ministry.model';
+import { SmallGroup, SmallGroupMember } from '../models/small-group.model';
 
 @Injectable({
   providedIn: 'root'
@@ -290,6 +291,33 @@ export class MockDataService {
 
   private currentUser: User | null = null;
 
+  private members: User[] = [
+    { id: 'u1',  name: 'João Membro',       email: 'member@shalom.com',   role: UserRole.MEMBER, isMember: true,  ministries: ['louvor'],      phone: '(43) 99001-0001', address: 'Rua das Flores, 10',    neighborhood: 'Centro',           city: 'Londrina', birthDate: '1990-03-15' },
+    { id: 'u2',  name: 'Administrador',      email: 'admin@shalom.com',    role: UserRole.ADMIN,  isMember: true,  ministries: ['staff'],       phone: '(43) 99001-0002', address: 'Av. Brasil, 500',        neighborhood: 'Gleba Palhano',    city: 'Londrina', birthDate: '1985-07-22' },
+    { id: 'u3',  name: 'Ana Paula Melo',     email: 'ana@shalom.com',      role: UserRole.MEMBER, isMember: true,  ministries: ['intercessão'], phone: '(43) 99001-0003', address: 'Rua XV de Novembro, 88', neighborhood: 'Centro',           city: 'Londrina', birthDate: '1993-11-05' },
+    { id: 'u4',  name: 'Carlos Henrique',    email: 'carlos@shalom.com',   role: UserRole.MEMBER, isMember: true,  ministries: ['louvor'],      phone: '(43) 99001-0004', address: 'Rua Pará, 220',          neighborhood: 'Jardim Shangrilá', city: 'Londrina', birthDate: '1988-01-30' },
+    { id: 'u5',  name: 'Fernanda Lima',      email: 'fernanda@shalom.com', role: UserRole.MEMBER, isMember: true,  ministries: ['louvor'],      phone: '(43) 99001-0005', address: 'Rua Sergipe, 45',        neighborhood: 'Jardim Shangrilá', city: 'Londrina', birthDate: '1991-06-18' },
+    { id: 'u6',  name: 'Rafael Almeida',     email: 'rafael@shalom.com',   role: UserRole.MEMBER, isMember: true,  ministries: [],              phone: '(43) 99001-0006', address: 'Av. Tiradentes, 980',    neighborhood: 'Gleba Palhano',    city: 'Londrina', birthDate: '1996-09-12' },
+    { id: 'u7',  name: 'Vanessa Cardoso',    email: 'vanessa@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['intercessão'], phone: '(43) 99001-0007', address: 'Rua Dom Pedro II, 310',  neighborhood: 'Centenário',       city: 'Londrina', birthDate: '1987-04-25' },
+    { id: 'u8',  name: 'Pedro Costa',        email: 'pedro@shalom.com',    role: UserRole.MEMBER, isMember: true,  ministries: [],              phone: '(43) 99001-0008', address: 'Rua das Flores, 142',    neighborhood: 'Jardim Shangrilá', city: 'Londrina', birthDate: '1984-12-03' },
+    { id: 'u9',  name: 'Mariana Costa',      email: 'mariana@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['recepção'],    phone: '(43) 99001-0009', address: 'Rua Minas Gerais, 77',   neighborhood: 'Centro',           city: 'Londrina', birthDate: '1995-08-14' },
+    { id: 'u10', name: 'Lucas Ferreira',     email: 'lucas@shalom.com',    role: UserRole.MEMBER, isMember: true,  ministries: ['recepção'],    phone: '(43) 99001-0010', address: 'Rua Espírito Santo, 33', neighborhood: 'Centenário',       city: 'Londrina', birthDate: '1997-02-27' },
+    { id: 'u11', name: 'Patricia Oliveira',  email: 'patricia@shalom.com', role: UserRole.MEMBER, isMember: true,  ministries: ['recepção'],    phone: '(43) 99001-0011', address: 'Av. Saul Elkind, 200',   neighborhood: 'Warta',            city: 'Londrina', birthDate: '1989-05-09' },
+    { id: 'u12', name: 'Anderson Reis',      email: 'anderson@shalom.com', role: UserRole.MEMBER, isMember: true,  ministries: ['mídia'],       phone: '(43) 99001-0012', address: 'Rua Goiás, 15',          neighborhood: 'Jardim Shangrilá', city: 'Londrina', birthDate: '1992-10-21' },
+    { id: 'u13', name: 'Beatriz Alves',      email: 'beatriz@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['mídia'],       phone: '(43) 99001-0013', address: 'Rua Maranhão, 60',       neighborhood: 'Gleba Palhano',    city: 'Londrina', birthDate: '1994-03-07' },
+    { id: 'u14', name: 'Sandra Martins',     email: 'sandra@shalom.com',   role: UserRole.MEMBER, isMember: true,  ministries: ['café'],        phone: '(43) 99001-0014', address: 'Rua Amazonas, 130',      neighborhood: 'Centenário',       city: 'Londrina', birthDate: '1986-07-16' },
+    { id: 'u15', name: 'Roberto Nunes',      email: 'roberto@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['café'],        phone: '(43) 99001-0015', address: 'Rua Pernambuco, 55',     neighborhood: 'Centro',           city: 'Londrina', birthDate: '1983-11-29' },
+    { id: 'u16', name: 'Tatiane Borges',     email: 'tatiane@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['kids'],        phone: '(43) 99001-0016', address: 'Av. Rio de Janeiro, 400',neighborhood: 'Warta',            city: 'Londrina', birthDate: '1990-04-08' },
+    { id: 'u17', name: 'Eduardo Campos',     email: 'eduardo@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['kids'],        phone: '(43) 99001-0017', address: 'Rua Roraima, 22',        neighborhood: 'Jardim Shangrilá', city: 'Londrina', birthDate: '1993-09-14' },
+    { id: 'u18', name: 'Diego Pereira',      email: 'diego@shalom.com',    role: UserRole.MEMBER, isMember: true,  ministries: ['segurança'],   phone: '(43) 99001-0018', address: 'Rua Acre, 90',           neighborhood: 'Centenário',       city: 'Londrina', birthDate: '1987-01-20' },
+    { id: 'u19', name: 'Marcos Rocha',       email: 'marcos@shalom.com',   role: UserRole.MEMBER, isMember: true,  ministries: ['segurança'],   phone: '(43) 99001-0019', address: 'Rua Tocantins, 180',     neighborhood: 'Gleba Palhano',    city: 'Londrina', birthDate: '1985-06-03' },
+    { id: 'u20', name: 'Rodrigo Azevedo',    email: 'rodrigo@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['staff'],       phone: '(43) 99001-0020', address: 'Av. Café, 800',          neighborhood: 'Centro',           city: 'Londrina', birthDate: '1991-12-11' },
+    { id: 'u21', name: 'Daniela Freitas',    email: 'daniela@shalom.com',  role: UserRole.MEMBER, isMember: true,  ministries: ['staff'],       phone: '(43) 99001-0021', address: 'Rua Bahia, 35',          neighborhood: 'Warta',            city: 'Londrina', birthDate: '1994-08-26' },
+    { id: 'u22', name: 'Camila Ferreira',    email: 'camila@shalom.com',   role: UserRole.VISITOR,isMember: false, ministries: [] },
+    { id: 'u23', name: 'Thiago Mendes',      email: 'thiago@shalom.com',   role: UserRole.VISITOR,isMember: false, ministries: [] },
+    { id: 'u24', name: 'Letícia Freitas',    email: 'leticia@shalom.com',  role: UserRole.VISITOR,isMember: false, ministries: [] },
+  ];
+
   private calendarEvents: CalendarEvent[] = [
     {
       id: 'ce1',
@@ -452,6 +480,80 @@ export class MockDataService {
 
   private schedules: MinistrySchedule[] = [];
 
+  private smallGroups: SmallGroup[] = [
+    {
+      id: 'sg1',
+      title: 'Grupo da Família Costa',
+      description: 'Um grupo acolhedor focado em estudo bíblico e comunhão familiar. Nos reunimos toda terça-feira para adorar, estudar a Palavra e fortalecer laços de amizade.',
+      leaders: ['Pedro Costa', 'Ana Costa'],
+      address: 'Rua das Flores, 142 – Jardim Shangrilá',
+      neighborhood: 'Jardim Shangrilá',
+      dayOfWeek: 'Terça-feira',
+      time: '19:30',
+      members: [
+        { id: 'sgm1', name: 'Pedro Costa', phone: '(43) 99101-0001' },
+        { id: 'sgm2', name: 'Ana Costa', phone: '(43) 99101-0002' },
+        { id: 'sgm3', name: 'Marcos Silva', phone: '(43) 99101-0003' },
+        { id: 'sgm4', name: 'Juliana Rocha', phone: '(43) 99101-0004' },
+        { id: 'sgm5', name: 'Thiago Mendes' },
+        { id: 'sgm6', name: 'Letícia Freitas' }
+      ]
+    },
+    {
+      id: 'sg2',
+      title: 'Grupo Zona Norte',
+      description: 'Grupo voltado para jovens adultos da região norte da cidade. Combinamos estudo da Palavra com momentos de louvor e oração.',
+      leaders: ['Rafael Almeida'],
+      address: 'Av. Tiradentes, 980 – Gleba Palhano',
+      neighborhood: 'Gleba Palhano',
+      dayOfWeek: 'Quarta-feira',
+      time: '20:00',
+      members: [
+        { id: 'sgm7', name: 'Rafael Almeida', phone: '(43) 99102-0001' },
+        { id: 'sgm8', name: 'Camila Ferreira' },
+        { id: 'sgm9', name: 'Diego Nunes', phone: '(43) 99102-0003' },
+        { id: 'sgm10', name: 'Priscila Santos' },
+        { id: 'sgm11', name: 'Bruno Carvalho' }
+      ]
+    },
+    {
+      id: 'sg3',
+      title: 'Grupo Casais Abênçoados',
+      description: 'Grupo exclusivo para casais que desejam crescer juntos na fé. Trabalhamos temas de relacionamento, família e propósito conjugal à luz da Bíblia.',
+      leaders: ['Carlos Henrique', 'Fernanda Lima'],
+      address: 'Rua Josefa Serafim Borges, 55 – Warta',
+      neighborhood: 'Warta',
+      dayOfWeek: 'Sexta-feira',
+      time: '19:00',
+      members: [
+        { id: 'sgm12', name: 'Carlos Henrique', phone: '(43) 99103-0001' },
+        { id: 'sgm13', name: 'Fernanda Lima', phone: '(43) 99103-0002' },
+        { id: 'sgm14', name: 'Gabriel Souza' },
+        { id: 'sgm15', name: 'Patrícia Souza' },
+        { id: 'sgm16', name: 'Anderson Reis', phone: '(43) 99103-0005' },
+        { id: 'sgm17', name: 'Beatriz Alves', phone: '(43) 99103-0006' },
+        { id: 'sgm18', name: 'Luiz Teixeira' },
+        { id: 'sgm19', name: 'Sandra Teixeira' }
+      ]
+    },
+    {
+      id: 'sg4',
+      title: 'Grupo Centenário',
+      description: 'Um grupo com muita história e fé! Atendemos principalmente famílias do bairro Centenário e região. Foco em comunhão, louvor e intercessão.',
+      leaders: ['Vanessa Cardoso'],
+      address: 'Rua Dom Pedro II, 310 – Centenário',
+      neighborhood: 'Centenário',
+      dayOfWeek: 'Quinta-feira',
+      time: '19:30',
+      members: [
+        { id: 'sgm20', name: 'Vanessa Cardoso', phone: '(43) 99104-0001' },
+        { id: 'sgm21', name: 'José Oliveira' },
+        { id: 'sgm22', name: 'Maria Oliveira' },
+        { id: 'sgm23', name: 'Rodrigo Azevedo', phone: '(43) 99104-0004' },
+        { id: 'sgm24', name: 'Daniela Freitas' }
+      ]
+    }
+  ];
 
   // Get all posts or filter by visibility
   getPosts(membersOnly: boolean = false): Post[] {
@@ -615,5 +717,46 @@ export class MockDataService {
     };
     this.schedules.push(newSchedule);
     return newSchedule;
+  }
+
+  // ── Members ──────────────────────────────────────────────────────────
+
+  getMembers(): User[] {
+    return [...this.members];
+  }
+
+  // ── Small Groups ─────────────────────────────────────────────────────
+
+  getSmallGroups(): SmallGroup[] {
+    return [...this.smallGroups];
+  }
+
+  addSmallGroup(group: Omit<SmallGroup, 'id'>): SmallGroup {
+    const newGroup: SmallGroup = { ...group, id: 'sg' + Date.now() };
+    this.smallGroups.push(newGroup);
+    return newGroup;
+  }
+
+  updateSmallGroup(id: string, changes: Partial<Omit<SmallGroup, 'id'>>): SmallGroup | null {
+    const idx = this.smallGroups.findIndex(g => g.id === id);
+    if (idx === -1) return null;
+    this.smallGroups[idx] = { ...this.smallGroups[idx], ...changes };
+    return this.smallGroups[idx];
+  }
+
+  deleteSmallGroup(id: string): void {
+    this.smallGroups = this.smallGroups.filter(g => g.id !== id);
+  }
+
+  addMemberToGroup(groupId: string, member: Omit<SmallGroupMember, 'id'>): void {
+    const group = this.smallGroups.find(g => g.id === groupId);
+    if (!group) return;
+    group.members.push({ ...member, id: 'sgm' + Date.now() });
+  }
+
+  removeMemberFromGroup(groupId: string, memberId: string): void {
+    const group = this.smallGroups.find(g => g.id === groupId);
+    if (!group) return;
+    group.members = group.members.filter(m => m.id !== memberId);
   }
 }

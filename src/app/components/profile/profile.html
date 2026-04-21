@@ -1,0 +1,43 @@
+<div class="profile-page">
+  <div class="profile-header">
+    <h1>Profile</h1>
+    <p>Atualize suas informações pessoais</p>
+  </div>
+
+  <div class="success-message" *ngIf="saveMessage">
+    {{ saveMessage }}
+  </div>
+
+  <form class="profile-card" (submit)="saveProfile(); $event.preventDefault()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Nome completo</label>
+        <input id="name" name="name" type="text" [(ngModel)]="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" [(ngModel)]="email" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="phone">WhatsApp</label>
+        <input id="phone" name="phone" type="tel" [(ngModel)]="phone" placeholder="(00) 00000-0000">
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Data de nascimento</label>
+        <input id="birthDate" name="birthDate" type="date" [(ngModel)]="birthDate">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="city">Cidade</label>
+      <input id="city" name="city" type="text" [(ngModel)]="city" placeholder="Sua cidade">
+    </div>
+
+    <button class="save-btn" type="submit">Salvar alterações</button>
+  </form>
+</div>

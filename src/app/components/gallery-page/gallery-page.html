@@ -2,6 +2,7 @@
   <div class="page-header">
     <span class="page-icon">📷</span>
     <h1 class="page-title">Galeria</h1>
+    <button class="page-admin-btn" *ngIf="isAdmin" (click)="showCreateModal = true">+ Nova Mídia</button>
   </div>
 
   <div class="posts-feed">
@@ -12,3 +13,12 @@
     <p>Nenhuma foto ou vídeo disponível no momento.</p>
   </div>
 </div>
+
+<app-post-form-modal
+  *ngIf="showCreateModal"
+  modalTitle="Nova Mídia"
+  [defaultType]="PostType.GALLERY"
+  [lockType]="true"
+  (close)="showCreateModal = false"
+  (postCreated)="onItemCreated()">
+</app-post-form-modal>

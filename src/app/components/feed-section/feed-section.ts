@@ -9,7 +9,7 @@ import { MockDataService } from '../../services/mock-data.service';
   selector: 'app-feed-section',
   imports: [CommonModule, FormsModule, PostCard],
   templateUrl: './feed-section.html',
-  styleUrl: './feed-section.scss',
+  styleUrl: './feed-section.css',
 })
 export class FeedSection {
   @Input() type!: PostType;

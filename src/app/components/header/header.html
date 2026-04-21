@@ -6,12 +6,21 @@
       <span></span>
     </button>
     <div class="logo">
-      <a routerLink="/">
+      <a routerLink="/feed">
         <img src="logo.png" alt="Comunidade Shalom" class="logo-img">
       </a>
     </div>
     <div class="user-info">
-      <button *ngIf="user" (click)="logout()" class="logout-btn">Sair</button>
+      <div class="user-menu" *ngIf="user" (click)="$event.stopPropagation()">
+        <button class="user-menu-trigger" (click)="toggleUserMenu($event)" aria-label="Abrir menu do usuário">
+          <span class="user-avatar-icon">👤</span>
+        </button>
+        <div class="user-dropdown" *ngIf="showUserMenu">
+          <button class="dropdown-item" (click)="goToProfile()">Profile</button>
+          <button class="dropdown-item" (click)="goToAbout()">Sobre nós</button>
+          <button class="dropdown-item danger" (click)="logout()">Sair</button>
+        </div>
+      </div>
       <button *ngIf="!user" (click)="goToLogin()" class="login-btn">Entrar</button>
     </div>
   </div>
@@ -23,13 +32,9 @@
 <!-- Sidebar -->
 <nav class="sidebar" [class.open]="sidebarOpen">
   <div class="sidebar-header">
-    <img src="logo.png" alt="Comunidade Shalom" class="sidebar-logo">
+    <img src="/public/main_logo.jpg" alt="Comunidade Shalom" class="sidebar-logo">
+    <span class="sidebar-header-username" *ngIf="user">{{ user.name }}</span>
     <button class="sidebar-close" (click)="closeSidebar()">✕</button>
-  </div>
-
-  <div class="sidebar-user" *ngIf="user">
-    <span class="sidebar-user-icon">👤</span>
-    <span class="sidebar-user-name">{{ user.name }}</span>
   </div>
 
   <div class="sidebar-scroll">
@@ -40,11 +45,15 @@
       </a>
       <a routerLink="/calendar" (click)="closeSidebar()" routerLinkActive="active">
         <span class="sidebar-icon">📅</span>
-        <span>Calendário</span>
+        <span>Agenda igreja</span>
       </a>
-      <a routerLink="/admin" (click)="closeSidebar()" routerLinkActive="active" *ngIf="isAdmin">
-        <span class="sidebar-icon">⚙️</span>
-        <span>Painel Admin</span>
+      <a routerLink="/small-groups" (click)="closeSidebar()" routerLinkActive="active" *ngIf="isAdmin">
+        <span class="sidebar-icon">🏘️</span>
+        <span>Grupos Semanais</span>
+      </a>
+      <a routerLink="/members-list" (click)="closeSidebar()" routerLinkActive="active" *ngIf="isAdmin">
+        <span class="sidebar-icon">👥</span>
+        <span>Membros</span>
       </a>
       <a routerLink="/ministry-schedule" (click)="closeSidebar()" routerLinkActive="active" *ngIf="isAdmin">
         <span class="sidebar-icon">📋</span>
@@ -107,3 +116,9 @@
     </button>
   </div>
 </nav>
+
+<app-login
+  *ngIf="showLoginModal && !user"
+  (close)="closeLoginModal()"
+  (loginSuccess)="onLoginSuccess()">
+</app-login>

@@ -4,12 +4,13 @@ import { Subscription } from 'rxjs';
 import { Post, PostType } from '../../models/post.model';
 import { MockDataService } from '../../services/mock-data.service';
 import { PostCard } from '../post-card/post-card';
+import { PostFormModal } from '../post-form-modal/post-form-modal';
 
 @Component({
   selector: 'app-feed',
-  imports: [CommonModule, PostCard],
+  imports: [CommonModule, PostCard, PostFormModal],
   templateUrl: './feed.html',
-  styleUrl: './feed.scss',
+  styleUrl: './feed.css',
 })
 export class Feed implements OnInit, OnDestroy {
   posts: Post[] = [];
@@ -53,7 +54,21 @@ export class Feed implements OnInit, OnDestroy {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
+  showPostModal = false;
+
+  openPostModal(): void { this.showPostModal = true; }
+  closePostModal(): void { this.showPostModal = false; }
+
+  onPostCreated(): void {
+    this.loadPosts();
+    this.showPostModal = false;
+  }
+
   get user() {
     return this.mockDataService.getCurrentUser();
+  }
+
+  get isAdmin(): boolean {
+    return this.user?.role === 'admin';
   }
 }
