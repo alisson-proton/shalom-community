@@ -1,0 +1,83 @@
+<div class="schedule-container">
+  <div class="schedule-header">
+    <button class="back-btn" (click)="goToCalendar()">← Calendário</button>
+    <h1>📋 Escala de Ministérios</h1>
+    <p>Escale os membros dos ministérios para cultos e eventos</p>
+  </div>
+
+  <div class="success-message" *ngIf="successMessage">
+    ✅ {{ successMessage }}
+  </div>
+
+  <!-- Event selector -->
+  <div class="event-selector-card">
+    <label class="selector-label">Selecione o culto / evento</label>
+    <select [(ngModel)]="selectedEventId" (ngModelChange)="onEventChange()" class="event-select">
+      <option value="">-- Escolha um evento --</option>
+      <option *ngFor="let ev of events" [value]="ev.id">
+        {{ ev.title }} – {{ formatEventDate(ev) }}
+        <ng-container *ngIf="ev.time"> {{ ev.time }}</ng-container>
+      </option>
+    </select>
+  </div>
+
+  <!-- Selected event info -->
+  <div class="selected-event-info" *ngIf="selectedEvent">
+    <div class="event-info-badge" [ngClass]="selectedEvent.type === 'cult' ? 'type-cult' : 'type-event'">
+      {{ getEventTypeLabel(selectedEvent.type) }}
+    </div>
+    <div class="event-info-details">
+      <h3>{{ selectedEvent.title }}</h3>
+      <p>
+        <span *ngIf="selectedEvent.time">🕐 {{ selectedEvent.time }}<span *ngIf="selectedEvent.endTime"> – {{ selectedEvent.endTime }}</span> &nbsp;</span>
+        <span *ngIf="selectedEvent.location">📍 {{ selectedEvent.location }}</span>
+      </p>
+    </div>
+    <div class="total-assigned" *ngIf="getTotalAssigned() > 0">
+      <span>{{ getTotalAssigned() }} escalados</span>
+    </div>
+  </div>
+
+  <!-- Ministry cards -->
+  <div class="ministries-grid" *ngIf="selectedEvent">
+    <div class="ministry-card" *ngFor="let assignment of assignments">
+      <div class="ministry-card-header">
+        <span class="ministry-icon">{{ assignment.ministry.icon }}</span>
+        <h4>{{ assignment.ministry.name }}</h4>
+        <span class="member-count-badge" *ngIf="getSelectedCount(assignment) > 0">
+          {{ getSelectedCount(assignment) }}
+        </span>
+      </div>
+
+      <div class="members-list">
+        <label
+          *ngFor="let member of assignment.ministry.members"
+          class="member-item"
+          [class.member-selected]="isMemberSelected(assignment, member.id)">
+          <input
+            type="checkbox"
+            [checked]="isMemberSelected(assignment, member.id)"
+            (change)="toggleMember(assignment, member.id)" />
+          <span class="member-avatar">{{ member.name.charAt(0) }}</span>
+          <div class="member-info">
+            <span class="member-name">{{ member.name }}</span>
+            <span class="member-phone" *ngIf="member.phone">{{ member.phone }}</span>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save button -->
+  <div class="save-bar" *ngIf="selectedEvent">
+    <span class="save-info">{{ getTotalAssigned() }} membro(s) escalado(s) no total</span>
+    <button class="btn-save" (click)="saveSchedule()">💾 Salvar Escala</button>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!selectedEvent">
+    <div class="empty-icon">📋</div>
+    <h3>Selecione um evento acima</h3>
+    <p>Escolha um culto ou evento para começar a escalar os ministérios.</p>
+  </div>
+</div>

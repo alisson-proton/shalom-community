@@ -10,4 +10,10 @@ export interface User {
   email: string;
   role: UserRole;
   isMember: boolean;
+  ministries?: string[];
+  phone?: string;
+  address?: string;
+  neighborhood?: string;
+  city?: string;
+  birthDate?: string;
 }

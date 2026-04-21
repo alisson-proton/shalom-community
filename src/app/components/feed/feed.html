@@ -11,3 +11,21 @@
     <p>Nenhuma publicação encontrada.</p>
   </div>
 </div>
+
+<!-- Admin FAB -->
+<button
+  *ngIf="isAdmin"
+  class="feed-fab"
+  (click)="openPostModal()"
+  title="Nova publicação"
+  aria-label="Nova publicação">
+  +
+</button>
+
+<!-- Post Creation Modal -->
+<app-post-form-modal
+  *ngIf="showPostModal"
+  modalTitle="Nova Publicação"
+  (close)="closePostModal()"
+  (postCreated)="onPostCreated()">
+</app-post-form-modal>

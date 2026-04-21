@@ -9,7 +9,7 @@ import { MockDataService } from '../../services/mock-data.service';
   selector: 'app-post-card',
   imports: [CommonModule, FormsModule],
   templateUrl: './post-card.html',
-  styleUrl: './post-card.scss',
+  styleUrl: './post-card.css',
 })
 export class PostCard {
   @Input() post!: Post;

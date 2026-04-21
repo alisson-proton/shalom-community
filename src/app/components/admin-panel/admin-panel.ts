@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   selector: 'app-admin-panel',
   imports: [CommonModule, FormsModule],
   templateUrl: './admin-panel.html',
-  styleUrl: './admin-panel.scss',
+  styleUrl: './admin-panel.css',
 })
 export class AdminPanel implements OnInit {
   title = '';
@@ -33,7 +33,7 @@ export class AdminPanel implements OnInit {
   ngOnInit(): void {
     const user = this.mockDataService.getCurrentUser();
     if (!user || user.role !== 'admin') {
-      this.router.navigate(['/members']);
+      this.router.navigate(['/feed']);
     }
   }
 

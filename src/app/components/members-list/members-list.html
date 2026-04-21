@@ -1,0 +1,167 @@
+<div class="ml-container">
+
+  <!-- Header -->
+  <div class="ml-header">
+    <div class="ml-header-left">
+      <span class="ml-header-icon">👥</span>
+      <div>
+        <h1 class="ml-title">Membros</h1>
+        <p class="ml-subtitle">
+          <span class="ml-stat">{{ memberCount }} membros</span>
+          <span class="ml-dot">·</span>
+          <span class="ml-stat ml-stat--muted">{{ visitorCount }} visitantes</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="ml-filters">
+    <div class="ml-search-wrap">
+      <span class="ml-search-icon">🔍</span>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Buscar por nome ou e-mail..."
+        class="ml-search">
+    </div>
+
+    <div class="ml-role-filters">
+      <button
+        class="ml-filter-btn"
+        [class.ml-filter-btn--active]="filterRole === 'all'"
+        (click)="filterRole = 'all'">Todos</button>
+      <button
+        class="ml-filter-btn"
+        [class.ml-filter-btn--active]="filterRole === UserRole.MEMBER"
+        (click)="filterRole = UserRole.MEMBER">Membros</button>
+      <button
+        class="ml-filter-btn"
+        [class.ml-filter-btn--active]="filterRole === UserRole.VISITOR"
+        (click)="filterRole = UserRole.VISITOR">Visitantes</button>
+      <button
+        class="ml-filter-btn"
+        [class.ml-filter-btn--active]="filterRole === UserRole.ADMIN"
+        (click)="filterRole = UserRole.ADMIN">Admins</button>
+    </div>
+  </div>
+
+  <!-- Results count -->
+  <p class="ml-results" *ngIf="searchQuery || filterRole !== 'all'">
+    {{ filtered.length }} resultado{{ filtered.length !== 1 ? 's' : '' }} encontrado{{ filtered.length !== 1 ? 's' : '' }}
+  </p>
+
+  <!-- Table -->
+  <div class="ml-table-wrap" *ngIf="filtered.length > 0">
+    <table class="ml-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Perfil</th>
+          <th>Ministérios</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let member of filtered" class="ml-row">
+          <td>
+            <div
+              class="ml-avatar"
+              [style.background]="'hsl(' + avatarHue(member.name) + ', 40%, 25%)'">
+              <span
+                class="ml-avatar-initials"
+                [style.color]="'hsl(' + avatarHue(member.name) + ', 70%, 75%)'">
+                {{ initials(member.name) }}
+              </span>
+            </div>
+          </td>
+          <td class="ml-cell-name">{{ member.name }}</td>
+          <td class="ml-cell-email">{{ member.email }}</td>
+          <td>
+            <span
+              class="ml-role-badge"
+              [class.ml-role-badge--admin]="member.role === UserRole.ADMIN"
+              [class.ml-role-badge--member]="member.role === UserRole.MEMBER"
+              [class.ml-role-badge--visitor]="member.role === UserRole.VISITOR">
+              {{ roleLabel[member.role] }}
+            </span>
+          </td>
+          <td class="ml-cell-ministries">
+            <ng-container *ngIf="member.ministries && member.ministries.length > 0; else noMin">
+              <span class="ml-ministry-tag" *ngFor="let m of member.ministries">{{ m }}</span>
+            </ng-container>
+            <ng-template #noMin><span class="ml-none">—</span></ng-template>
+          </td>
+          <td>
+            <button class="ml-btn-detail" (click)="openDetail(member)">Ver</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty -->
+  <div class="ml-empty" *ngIf="filtered.length === 0">
+    <span class="ml-empty-icon">👤</span>
+    <p>Nenhum membro encontrado.</p>
+  </div>
+
+</div>
+
+<!-- Detail Modal -->
+<div class="ml-modal-backdrop" *ngIf="selectedMember" (click)="closeDetail()">
+  <div class="ml-modal" (click)="$event.stopPropagation()">
+    <button class="ml-modal-close" (click)="closeDetail()">✕</button>
+
+    <!-- Avatar -->
+    <div class="ml-modal-avatar-wrap">
+      <div
+        class="ml-modal-avatar"
+        [style.background]="'hsl(' + avatarHue(selectedMember.name) + ', 40%, 25%)'">
+        <span
+          class="ml-modal-avatar-initials"
+          [style.color]="'hsl(' + avatarHue(selectedMember.name) + ', 70%, 75%)'">
+          {{ initials(selectedMember.name) }}
+        </span>
+      </div>
+      <div>
+        <h2 class="ml-modal-name">{{ selectedMember.name }}</h2>
+        <span
+          class="ml-role-badge"
+          [class.ml-role-badge--admin]="selectedMember.role === UserRole.ADMIN"
+          [class.ml-role-badge--member]="selectedMember.role === UserRole.MEMBER"
+          [class.ml-role-badge--visitor]="selectedMember.role === UserRole.VISITOR">
+          {{ roleLabel[selectedMember.role] }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Details grid -->
+    <div class="ml-modal-details">
+      <div class="ml-modal-row">
+        <span class="ml-modal-label">E-mail</span>
+        <span class="ml-modal-value">{{ selectedMember.email }}</span>
+      </div>
+      <div class="ml-modal-row" *ngIf="selectedMember.phone">
+        <span class="ml-modal-label">Telefone</span>
+        <span class="ml-modal-value">{{ selectedMember.phone }}</span>
+      </div>
+      <div class="ml-modal-row" *ngIf="selectedMember.birthDate">
+        <span class="ml-modal-label">Nascimento</span>
+        <span class="ml-modal-value">{{ selectedMember.birthDate | date:'dd/MM/yyyy' }}</span>
+      </div>
+      <div class="ml-modal-row" *ngIf="selectedMember.address">
+        <span class="ml-modal-label">Endereço</span>
+        <span class="ml-modal-value">{{ selectedMember.address }}<ng-container *ngIf="selectedMember.neighborhood">, {{ selectedMember.neighborhood }}</ng-container><ng-container *ngIf="selectedMember.city"> — {{ selectedMember.city }}</ng-container></span>
+      </div>
+      <div class="ml-modal-row" *ngIf="selectedMember.ministries && selectedMember.ministries.length > 0">
+        <span class="ml-modal-label">Ministérios</span>
+        <span class="ml-modal-value">
+          <span class="ml-ministry-tag" *ngFor="let m of selectedMember.ministries">{{ m }}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

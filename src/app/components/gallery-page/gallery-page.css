@@ -1,0 +1,54 @@
+.page-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #262626;
+  margin-bottom: 0.25rem;
+}
+.page-header .page-icon {
+  font-size: 1.3rem;
+}
+.page-header .page-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fafafa;
+  margin: 0;
+  flex: 1;
+}
+
+.page-admin-btn {
+  background: transparent;
+  border: 1px solid #363636;
+  border-radius: 9px;
+  color: #F29104;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
+}
+.page-admin-btn:hover {
+  background: rgba(242,145,4,0.1);
+  border-color: #F29104;
+}
+
+.posts-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.no-posts {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}

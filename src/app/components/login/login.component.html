@@ -1,0 +1,46 @@
+<div class="login-modal-overlay" (click)="onClose()">
+	<div class="login-card" (click)="$event.stopPropagation()">
+		<button class="modal-close" (click)="onClose()">✕</button>
+
+		<div class="login-logo">
+			<img src="logo.png" alt="Comunidade Shalom">
+		</div>
+		<p>Faça login para acessar o conteúdo exclusivo</p>
+
+		<form (submit)="login(); $event.preventDefault()">
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input
+					id="email"
+					name="email"
+					type="email"
+					[(ngModel)]="email"
+					placeholder="member@shalom.com"
+					required>
+			</div>
+
+			<div class="form-group">
+				<label for="password">Senha</label>
+				<input
+					id="password"
+					name="password"
+					type="password"
+					[(ngModel)]="password"
+					placeholder="Digite sua senha"
+					required>
+			</div>
+
+			<div class="error-message" *ngIf="loginError">
+				{{ loginError }}
+			</div>
+
+			<button type="submit" class="login-btn">Entrar</button>
+		</form>
+
+		<div class="demo-credentials">
+			<p><strong>Credenciais de Demonstração:</strong></p>
+			<p>Membro: member@shalom.com (qualquer senha)</p>
+			<p>Admin: admin@shalom.com (qualquer senha)</p>
+		</div>
+	</div>
+</div>

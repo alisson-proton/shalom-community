@@ -1,0 +1,223 @@
+.pfm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: pfmFade 0.15s ease;
+}
+@keyframes pfmFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.pfm-modal {
+  background: #1a1a1a;
+  border: 1px solid #363636;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  animation: pfmSlide 0.2s ease;
+  overflow: hidden;
+}
+@keyframes pfmSlide {
+  from { transform: translateY(18px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Header */
+.pfm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid #262626;
+  flex-shrink: 0;
+}
+.pfm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.pfm-header-icon {
+  font-size: 1.25rem;
+}
+.pfm-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fafafa;
+  margin: 0;
+}
+.pfm-close {
+  background: transparent;
+  border: none;
+  color: #8e8e8e;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.pfm-close:hover {
+  color: #fafafa;
+}
+
+/* Success */
+.pfm-success {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  color: #8fbc8f;
+  font-size: 0.95rem;
+  font-weight: 600;
+  justify-content: center;
+  text-align: center;
+}
+.pfm-success-icon {
+  font-size: 1.6rem;
+}
+
+/* Body */
+.pfm-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.pfm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.pfm-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.pfm-full {
+  grid-column: 1 / -1;
+}
+
+.pfm-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8e8e8e;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.pfm-label small {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: #555;
+}
+
+.pfm-input,
+.pfm-textarea,
+.pfm-select {
+  background: #111;
+  border: 1px solid #363636;
+  border-radius: 9px;
+  padding: 0.65rem 0.85rem;
+  color: #fafafa;
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.pfm-input::placeholder,
+.pfm-textarea::placeholder {
+  color: #4a4a4a;
+}
+.pfm-input:focus,
+.pfm-textarea:focus,
+.pfm-select:focus {
+  border-color: #F29104;
+}
+.pfm-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+.pfm-select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e8e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+.pfm-select option {
+  background: #1a1a1a;
+  color: #fafafa;
+}
+
+/* Footer */
+.pfm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #262626;
+  flex-shrink: 0;
+}
+.pfm-btn-ghost {
+  background: transparent;
+  border: 1px solid #363636;
+  border-radius: 8px;
+  color: #8e8e8e;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.2s, border-color 0.2s;
+}
+.pfm-btn-ghost:hover {
+  color: #fafafa;
+  border-color: #666;
+}
+.pfm-btn-primary {
+  background: #F29104;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.5rem 1.35rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.pfm-btn-primary:hover:not(:disabled) {
+  background: #d97e03;
+}
+.pfm-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 500px) {
+  .pfm-row {
+    grid-template-columns: 1fr;
+  }
+  .pfm-footer {
+    flex-direction: column-reverse;
+  }
+  .pfm-footer button {
+    width: 100%;
+  }
+}

@@ -2,27 +2,8 @@
   <div class="page-header">
     <span class="page-icon">🙏</span>
     <h1 class="page-title">Oração</h1>
-    <button class="prayer-header-btn" (click)="showPrayerForm = !showPrayerForm" *ngIf="!prayerSubmitted">
-      Enviar Pedido
-    </button>
-  </div>
-
-  <!-- Prayer form -->
-  <div class="prayer-action" *ngIf="showPrayerForm && !prayerSubmitted">
-    <textarea
-      [(ngModel)]="prayerText"
-      placeholder="Escreva seu pedido de oração..."
-      rows="3"
-      class="prayer-textarea">
-    </textarea>
-    <div class="prayer-form-actions">
-      <button class="prayer-cancel" (click)="showPrayerForm = false">Cancelar</button>
-      <button class="prayer-submit" (click)="submitPrayer()" [disabled]="!prayerText.trim()">Enviar</button>
-    </div>
-  </div>
-
-  <div class="prayer-success" *ngIf="prayerSubmitted">
-    <span>✅ Pedido de oração enviado! A equipe pastoral estará orando por você.</span>
+    <button class="page-admin-btn" *ngIf="isAdmin" (click)="showCreateModal = true">+ Nova Publicação</button>
+    <button class="prayer-header-btn" (click)="openPrayerModal()">Enviar Pedido</button>
   </div>
 
   <div class="posts-feed">
@@ -33,3 +14,67 @@
     <p>Nenhum pedido de oração no momento.</p>
   </div>
 </div>
+
+<!-- Prayer Request Modal -->
+
+<div class="prayer-modal-overlay" *ngIf="showPrayerModal" (click)="closePrayerModal()">
+  <div class="prayer-modal-card" (click)="$event.stopPropagation()">
+
+    <div class="prayer-modal-header">
+      <span class="prayer-modal-icon">🙏</span>
+      <h2 class="prayer-modal-title">Pedido de Oração</h2>
+      <button class="prayer-modal-close" (click)="closePrayerModal()" aria-label="Fechar">✕</button>
+    </div>
+
+    <ng-container *ngIf="!prayerSubmitted">
+      <p class="prayer-modal-subtitle">
+        Nossa equipe pastoral estará em oração pelo seu pedido. Você pode compartilhar de forma anônima.
+      </p>
+
+      <div class="prayer-modal-body">
+        <div class="prayer-input-group">
+          <label class="prayer-label">Seu nome (opcional)</label>
+          <input
+            type="text"
+            [(ngModel)]="prayerName"
+            placeholder="Como posemos lhe chamar?"
+            class="prayer-input">
+        </div>
+
+        <div class="prayer-input-group">
+          <label class="prayer-label">Pedido de oração *</label>
+          <textarea
+            [(ngModel)]="prayerText"
+            placeholder="Compartilhe seu pedido de oração aqui..."
+            rows="5"
+            class="prayer-textarea">
+          </textarea>
+        </div>
+      </div>
+
+      <div class="prayer-modal-footer">
+        <button class="prayer-cancel" (click)="closePrayerModal()">Cancelar</button>
+        <button class="prayer-submit" (click)="submitPrayer()" [disabled]="!prayerText.trim()">
+          Enviar Pedido
+        </button>
+      </div>
+    </ng-container>
+
+    <div class="prayer-success-state" *ngIf="prayerSubmitted">
+      <div class="prayer-success-icon">✅</div>
+      <h3>Pedido Enviado!</h3>
+      <p>Nossa equipe pastoral estará orando por você. Que Deus abençoe e responda sua oração.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Admin: Create prayer post modal -->
+<app-post-form-modal
+  *ngIf="showCreateModal"
+  modalTitle="Nova Publicação de Oração"
+  [defaultType]="PostType.PRAYER"
+  [lockType]="true"
+  (close)="showCreateModal = false"
+  (postCreated)="onPrayerPostCreated()">
+</app-post-form-modal>

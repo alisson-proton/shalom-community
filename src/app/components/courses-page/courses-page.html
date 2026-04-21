@@ -2,6 +2,7 @@
   <div class="page-header">
     <span class="page-icon">📚</span>
     <h1 class="page-title">Cursos</h1>
+    <button class="page-admin-btn" *ngIf="isAdmin" (click)="showCreateModal = true">+ Novo Curso</button>
   </div>
 
   <div class="posts-feed">
@@ -105,3 +106,13 @@
     </ng-container>
   </div>
 </div>
+
+<!-- Admin: Create course modal -->
+<app-post-form-modal
+  *ngIf="showCreateModal"
+  modalTitle="Novo Curso"
+  [defaultType]="PostType.COURSE"
+  [lockType]="true"
+  (close)="showCreateModal = false"
+  (postCreated)="onCourseCreated()">
+</app-post-form-modal>

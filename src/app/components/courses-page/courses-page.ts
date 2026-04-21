@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Post, PostType } from '../../models/post.model';
 import { MockDataService } from '../../services/mock-data.service';
 import { PostCard } from '../post-card/post-card';
+import { PostFormModal } from '../post-form-modal/post-form-modal';
 
 interface CourseForm {
   fullName: string;
@@ -17,9 +18,9 @@ interface CourseForm {
 
 @Component({
   selector: 'app-courses-page',
-  imports: [CommonModule, FormsModule, PostCard],
+  imports: [CommonModule, FormsModule, PostCard, PostFormModal],
   templateUrl: './courses-page.html',
-  styleUrl: './courses-page.scss',
+  styleUrl: './courses-page.css',
 })
 export class CoursesPage implements OnInit {
   posts: Post[] = [];
@@ -33,6 +34,18 @@ export class CoursesPage implements OnInit {
   ngOnInit(): void {
     this.posts = this.mockDataService.getPosts(false)
       .filter(p => p.type === PostType.COURSE);
+  }
+
+  showCreateModal = false;
+  readonly PostType = PostType;
+
+  get isAdmin(): boolean {
+    return this.mockDataService.getCurrentUser()?.role === 'admin';
+  }
+
+  onCourseCreated(): void {
+    this.posts = this.mockDataService.getPosts(false).filter(p => p.type === PostType.COURSE);
+    this.showCreateModal = false;
   }
 
   openModal(post: Post): void {

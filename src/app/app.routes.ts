@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { Feed } from './components/feed/feed';
-import { MembersFeed } from './components/members-feed/members-feed';
 import { AdminPanel } from './components/admin-panel/admin-panel';
 import { Offerings } from './components/offerings/offerings';
 import { SocialLinks } from './components/social-links/social-links';
@@ -11,13 +10,20 @@ import { GalleryPage } from './components/gallery-page/gallery-page';
 import { PrayerPage } from './components/prayer-page/prayer-page';
 import { AboutUs } from './components/about-us/about-us';
 import { Serve } from './components/serve/serve';
+import { CalendarPage } from './components/calendar/calendar';
+import { MinistrySchedulePage } from './components/ministry-schedule/ministry-schedule';
+import { Profile } from './components/profile/profile';
+import { SmallGroups } from './components/small-groups/small-groups';
+import { MembersList } from './components/members-list/members-list';
 
 export const routes: Routes = [
   { path: '', component: AboutUs },
   { path: 'feed', component: Feed },
   { path: 'serve', component: Serve },
-  { path: 'members', component: MembersFeed },
+  { path: 'profile', component: Profile },
   { path: 'admin', component: AdminPanel },
+  { path: 'small-groups', component: SmallGroups },
+  { path: 'members-list', component: MembersList },
   { path: 'offerings', component: Offerings },
   { path: 'social', component: SocialLinks },
   { path: 'churches', component: Churches },
@@ -25,5 +31,7 @@ export const routes: Routes = [
   { path: 'courses', component: CoursesPage },
   { path: 'gallery', component: GalleryPage },
   { path: 'prayer', component: PrayerPage },
+  { path: 'calendar', component: CalendarPage },
+  { path: 'ministry-schedule', component: MinistrySchedulePage },
   { path: '**', redirectTo: '' }
 ];

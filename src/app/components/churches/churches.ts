@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-churches',
   imports: [CommonModule],
   templateUrl: './churches.html',
-  styleUrl: './churches.scss',
+  styleUrl: './churches.css',
 })
 export class Churches {
   churches = [
