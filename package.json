@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "sudo docker build --target builder -t shalom-builder . && sudo docker create --name shalom-extract shalom-builder && sudo docker cp shalom-extract:/app/dist ./dist && sudo docker rm shalom-extract && npx wrangler pages deploy dist/shalom-app/browser --project-name=shalom-community",
     "preview": "npm run build && wrangler dev"
   },
   "private": true,
